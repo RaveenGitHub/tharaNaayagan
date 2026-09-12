@@ -58,5 +58,41 @@
     "statusAfter": "Active",
     "owner": "QA Lead",
     "evidence": "manual-sync"
+  },
+  {
+    "eventId": "EVT-006",
+    "timestamp": "2026-09-12T09:11:47.915Z",
+    "objectType": "Test Plan",
+    "operation": "Create",
+    "entityId": "TP-API-01",
+    "entityName": "API Contract and Security Test Plan",
+    "statusBefore": "Draft",
+    "statusAfter": "Active",
+    "owner": "API Test Architect",
+    "evidence": "docs/api-test-plan.md"
+  },
+  {
+    "eventId": "EVT-007",
+    "timestamp": "2026-09-12T09:11:53.921Z",
+    "objectType": "Scenario",
+    "operation": "Create",
+    "entityId": "SCN-API-01",
+    "entityName": "API Login and Contract Validation Scenarios",
+    "statusBefore": "Draft",
+    "statusAfter": "Ready for Automation",
+    "owner": "API Test Architect",
+    "evidence": "docs/api-test-plan.md"
+  },
+  {
+    "eventId": "EVT-008",
+    "timestamp": "2026-09-12T09:11:53.997Z",
+    "objectType": "Automation",
+    "operation": "Create",
+    "entityId": "AUT-API-01",
+    "entityName": "Playwright API Test Suite",
+    "statusBefore": "Not Started",
+    "statusAfter": "Automated",
+    "owner": "API Automation Architect",
+    "evidence": "tests/api.spec.ts"
   }
 ]
