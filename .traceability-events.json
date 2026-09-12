@@ -1,0 +1,62 @@
+[
+  {
+    "eventId": "EVT-001",
+    "timestamp": "2026-09-11T20:51:52.065Z",
+    "objectType": "Test Plan",
+    "operation": "Create",
+    "entityId": "TP-01",
+    "entityName": "Login Test Plan",
+    "statusBefore": "Draft",
+    "statusAfter": "Active",
+    "owner": "QA Lead",
+    "evidence": "docs/traceability-tracker.md"
+  },
+  {
+    "eventId": "EVT-002",
+    "timestamp": "2026-09-11T20:51:52.130Z",
+    "objectType": "Scenario",
+    "operation": "Create",
+    "entityId": "SCN-01",
+    "entityName": "Valid Login Scenario",
+    "statusBefore": "Draft",
+    "statusAfter": "Ready for Automation",
+    "owner": "QA Engineer",
+    "evidence": "docs/scenarios.md"
+  },
+  {
+    "eventId": "EVT-003",
+    "timestamp": "2026-09-11T20:51:52.187Z",
+    "objectType": "Automation",
+    "operation": "Create",
+    "entityId": "AUT-01",
+    "entityName": "Smoke Login Test",
+    "statusBefore": "Not Started",
+    "statusAfter": "Automated",
+    "owner": "Automation Engineer",
+    "evidence": "tests/smoke.spec.ts"
+  },
+  {
+    "eventId": "EVT-004",
+    "timestamp": "2026-09-11T21:38:33.034Z",
+    "objectType": "Test Plan",
+    "operation": "Update",
+    "entityId": "TP-TRACE-001",
+    "entityName": "Manual traceability sync",
+    "statusBefore": "Draft",
+    "statusAfter": "In Progress",
+    "owner": "QA Lead",
+    "evidence": "manual-check"
+  },
+  {
+    "eventId": "EVT-005",
+    "timestamp": "2026-09-12T07:38:42.120Z",
+    "objectType": "Test Plan",
+    "operation": "Update",
+    "entityId": "TP-SYNC",
+    "entityName": "Traceability Sync",
+    "statusBefore": "Draft",
+    "statusAfter": "Active",
+    "owner": "QA Lead",
+    "evidence": "manual-sync"
+  }
+]

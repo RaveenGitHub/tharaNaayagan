@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+set -eu
+
+npm run quality-gate
+
+node scripts/traceability.mjs "Test Plan" "Update" "TP-LOCAL" "pre-commit check" "Draft" "Review" "QA Lead" "git-hook"
+node scripts/traceability.mjs "Scenario" "Update" "SCN-LOCAL" "pre-commit check" "Draft" "Ready" "QA Engineer" "git-hook"
+node scripts/traceability.mjs "Automation" "Update" "AUT-LOCAL" "pre-commit check" "Not Started" "Generated" "Automation Engineer" "git-hook"

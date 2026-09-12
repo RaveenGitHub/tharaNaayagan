@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #eef3ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .panel {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        width: 420px;
+        padding: 32px;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 8px;
+        border: 1px solid #cdd6e5;
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        background: #0d6efd;
+        color: white;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .error {
+        display: none;
+        color: #b42318;
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 12px;
+      }
+      .error.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <h2>Sign in</h2>
+      <form id="loginForm" novalidate>
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          type="email"
+          placeholder="admin@example.com"
+          autocomplete="username"
+          aria-required="true"
+        />
+
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Enter password"
+          autocomplete="current-password"
+          aria-required="true"
+        />
+
+        <button type="submit" id="loginButton">Login</button>
+        <div id="errorMessage" class="error" role="alert" aria-live="assertive">
+          Invalid username or password.
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // Demo authentication store for local testing and mock validation
+      const validUsers = {
+        "admin@example.com": "Admin@123",
+        "user@example.com": "User@123",
+        "guest@example.com": "Guest@123",
+        "api.client@example.com": "Api@123",
+      };
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById("username").value.trim();
+          const password = document.getElementById("password").value;
+          const error = document.getElementById("errorMessage");
+
+          if (!username || !password) {
+            error.textContent = "Please fill in all required fields.";
+            error.classList.add("visible");
+            return;
+          }
+
+          if (validUsers[username] && validUsers[username] === password) {
+            error.classList.remove("visible");
+            const role = username.includes("admin")
+              ? "Admin"
+              : username.includes("user")
+                ? "User"
+                : "Guest";
+            
+            // Set session tokens in storage
+            const sessionPayload = {
+              user: role,
+              email: username,
+              token: "mock-jwt-" + btoa(username + ":" + Date.now()),
+              issuedAt: new Date().toISOString()
+            };
+            sessionStorage.setItem("auth_session", JSON.stringify(sessionPayload));
+            localStorage.setItem("user_role", role);
+
+            window.location.href = "/?user=" + encodeURIComponent(role);
+            return;
+          }
+
+          error.textContent = "Invalid username or password.";
+          error.classList.add("visible");
+        });
+    </script>
+        });
+    </script>
+  </body>
+</html>

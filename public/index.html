@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Enterprise Portal</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f5f7fb;
+      }
+      .container {
+        max-width: 480px;
+        margin: 80px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        padding: 32px;
+      }
+      h1 {
+        margin-top: 0;
+        color: #1b2a41;
+      }
+      .user-box {
+        background: #eaf7ee;
+        border: 1px solid #c5e8d3;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 20px;
+      }
+      button {
+        background: #0d6efd;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 16px;
+        cursor: pointer;
+      }
+      button:hover {
+        opacity: 0.95;
+      }
+      .logout {
+        margin-top: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 data-testid="dashboard-title">Dashboard</h1>
+      <div class="user-box" role="region" aria-label="User Status">
+        <strong>Welcome back</strong>
+        <p id="userName" data-testid="user-display">Admin</p>
+      </div>
+      <button class="logout" id="logoutButton" data-testid="logout-btn">
+        Logout
+      </button>
+    </div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      let user = params.get("user");
+
+      if (!user) {
+        try {
+          const session = JSON.parse(
+            sessionStorage.getItem("auth_session") || "null",
+          );
+          user = session ? session.user : "Guest";
+        } catch {
+          user = "Guest";
+        }
+      }
+
+      // Sanitize text insertion to prevent XSS
+      const userElement = document.getElementById("userName");
+      if (userElement) {
+        userElement.textContent = String(user).replace(/[^\w\s-]/gi, "");
+      }
+
+      const logoutBtn = document.getElementById("logoutButton");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          sessionStorage.removeItem("auth_session");
+          localStorage.removeItem("user_role");
+          window.location.href = "/login.html";
+        });
+      }
+    </script>
+  </body>
+</html>
