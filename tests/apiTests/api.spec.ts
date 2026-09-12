@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { ApiClient } from "../utils/api-client";
-import { personas, securityPayloads } from "../fixtures/test-data";
+import { ApiClient } from "../../utils/api-client";
+import { personas, securityPayloads } from "../../fixtures/test-data";
 
 test.describe("API Test Suite - Contracts, Validation & Security", () => {
   let apiClient: ApiClient;

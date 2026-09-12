@@ -106,12 +106,16 @@ By the end of this guide, you should be able to:
 ├── scripts/
 │   └── traceability.mjs
 ├── tests/
-│   ├── smoke.spec.ts
-│   ├── auth.spec.ts
-│   ├── security.spec.ts
-│   └── boundary.spec.ts
+│   ├── functional/
+│   │   ├── smoke.spec.ts
+│   │   ├── auth.spec.ts
+│   │   ├── security.spec.ts
+│   │   └── boundary.spec.ts
+│   └── apiTests/
+│       └── api.spec.ts
 ├── utils/
-│   └── auth.ts
+│   ├── auth.ts
+│   └── api-client.ts
 ├── .githooks/
 │   └── pre-commit
 ├── eslint.config.mjs
@@ -127,6 +131,37 @@ By the end of this guide, you should be able to:
 ├── .traceability-events.json
 └── .gitignore
 ```
+
+---
+
+## AI Agents & Dual-Track Automation Architecture
+
+This repository incorporates an AI Agent ecosystem architected into two specialized validation tracks anchored by a master strategy engine:
+
+```mermaid
+graph TD
+    S["Startergist Agent<br/>(Master Test Strategy & Quality Governance)"] --> F1["functionalScenarioCreator Agent<br/>(Gherkin & Functional UI Scenarios)"]
+    S --> A1["apiTestPlan Agent<br/>(API Endpoint Contracts & Security Plan)"]
+
+    F1 --> F2["prepareFunctionalTests Agent<br/>(TypeScript POM, Accessible Locators & UI Specs)"]
+    A1 --> A2["apiCodeGenerator Agent<br/>(Playwright API Client & API Test Specs)"]
+
+    F2 --> E["Playwright Test Runner & Allure Governance"]
+    A2 --> E
+```
+
+### 1. Functional & UI Track
+
+- **`Startergist`** ([.github/agents/startergist.agent.md](.github/agents/startergist.agent.md)): Produces enterprise quality strategies, risk priorities, and governance metrics.
+- **`functionalScenarioCreator`** ([.github/agents/functionalScenarioCreator.agent.md](.github/agents/functionalScenarioCreator.agent.md)): Generates traceable Gherkin specifications and detailed UI test cases.
+- **`prepareFunctionalTests`** ([.github/agents/prepareFunctionalTests.agent.md](.github/agents/prepareFunctionalTests.agent.md)): Translates functional designs into Playwright Page Objects (`pages/`) and functional test specs (`tests/functional/smoke.spec.ts`, `tests/functional/auth.spec.ts`, `tests/functional/security.spec.ts`, `tests/functional/boundary.spec.ts`).
+
+### 2. API Automation Track
+
+- **`apiTestPlan`** ([.github/agents/apiTestPlan.agent.md](.github/agents/apiTestPlan.agent.md)): Analyzes endpoints and designs contract, negative, and OWASP API Top 10 security test plans.
+- **`apiCodeGenerator`** ([.github/agents/apiCodeGenerator.agent.md](.github/agents/apiCodeGenerator.agent.md)): Implements executable Playwright `APIRequestContext` tests and reusable helpers (`utils/api-client.ts`, `tests/apiTests/api.spec.ts`).
+
+---
 
 ---
 
@@ -175,8 +210,10 @@ Common commands:
 
 ```bash
 npm test
+npm run test:functional
+npm run test:apiTests
 npm run test:smoke
-npx playwright test tests/smoke.spec.ts --project=chromium --reporter=line
+npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
 
 ### Report
@@ -256,7 +293,7 @@ Example execution:
 
 ```bash
 npm run quality-gate
-npx playwright test tests/smoke.spec.ts --project=chromium --reporter=line
+npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
 
 ### Stage 4: Report
@@ -322,6 +359,8 @@ Typical fixes:
 - Store shared user data in `fixtures/test-data.ts`
 - Keep page logic in `pages/`
 - Keep reusable utilities in `utils/`
+- Keep functional test suites in `tests/functional/`
+- Keep API test suites in `tests/apiTests/`
 - Run smoke checks before broad regression runs
 - Keep report artifacts and traces for failures
 - Use a clean, consistent naming pattern for files and scenarios
@@ -341,7 +380,8 @@ You need Node.js, npm, Git, and Playwright browsers installed.
 ### How do I run the smoke test?
 
 ```bash
-npx playwright test tests/smoke.spec.ts --project=chromium --reporter=line
+npm run test:smoke
+# or: npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
 
 ### Where should I update test data?
@@ -385,7 +425,7 @@ Example:
 ```bash
 git checkout -b feature/my-change
 npm run quality-gate
-npx playwright test tests/smoke.spec.ts --project=chromium --reporter=line
+npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
 
 ---

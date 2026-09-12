@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/login.page";
-import { DashboardPage } from "../pages/dashboard.page";
-import { personas } from "../fixtures/test-data";
+import { LoginPage } from "../../pages/login.page";
+import { DashboardPage } from "../../pages/dashboard.page";
+import { personas } from "../../fixtures/test-data";
 
 test.describe("Authentication & Role-Based Access Suite", () => {
   test("standard user login displays user role on dashboard", async ({

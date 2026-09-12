@@ -87,4 +87,4 @@ This document defines the comprehensive API Test Plan for the platform's backend
 
 ## 6. Traceability & Execution Governance
 
-All API scenarios designed in this plan are tracked in [docs/traceability-tracker.md](docs/traceability-tracker.md) and automated via Playwright's `APIRequestContext` inside [tests/api.spec.ts](tests/api.spec.ts).
+All API scenarios designed in this plan are tracked in [docs/traceability-tracker.md](docs/traceability-tracker.md) and automated via Playwright's `APIRequestContext` inside [tests/apiTests/api.spec.ts](tests/apiTests/api.spec.ts).

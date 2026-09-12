@@ -38,7 +38,7 @@ Generate complete API automation test scripts for all scenarios marked **“Read
 
 ### 3. Generate Automation Code using Playwright
 
-- **Playwright Test Runner**: Implement test specs in TypeScript (`tests/api.spec.ts` or `tests/api/*.spec.ts`).
+- **Playwright Test Runner**: Implement test specs in TypeScript under `tests/apiTests/` (e.g., `tests/apiTests/api.spec.ts` or `tests/apiTests/*.spec.ts`).
 - **Request Context**: Utilize Playwright's `APIRequestContext` / `request` fixture for API executions.
 - **Client Utilities**: Implement or extend reusable API client utilities under `utils/api-client.ts` or `utils/api/` with SuperAgent-style automated header injection, correlation IDs, and timeout handling.
 

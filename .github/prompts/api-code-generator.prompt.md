@@ -19,8 +19,9 @@ Transform designed API scenarios marked "Ready for Automation" into executable P
 - Security testing suites (OWASP API Top 10, SQLi, NoSQLi, auth bypass, BOLA/IDOR)
 - Rate-limiting, performance-lite latency checks, idempotency, and pagination checks
 - Test data fixtures for valid, invalid, boundary, and dynamic payloads under `fixtures/`
+- Playwright API test specs located under `tests/apiTests/` (e.g., `tests/apiTests/api.spec.ts`)
 - Full test metadata annotations (`Requirement ID`, `Scenario ID`, `Severity S1–S5`, `Priority P1–P5`, `Traceability Score`)
-- Quality gate validation (`npm run quality-gate`) and test execution (`npm test` / `npm run test:api`)
+- Quality gate validation (`npm run quality-gate`) and test execution (`npm test` / `npm run test:api` / `npm run test:apiTests`)
 
 ## Inputs to Analyze
 

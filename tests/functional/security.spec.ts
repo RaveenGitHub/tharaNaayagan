@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/login.page";
-import { DashboardPage } from "../pages/dashboard.page";
-import { securityPayloads } from "../fixtures/test-data";
+import { LoginPage } from "../../pages/login.page";
+import { DashboardPage } from "../../pages/dashboard.page";
+import { securityPayloads } from "../../fixtures/test-data";
 
 test.describe("Security & Misuse Prevention Suite", () => {
   test("SQL injection payloads in login fields are rejected safely", async ({

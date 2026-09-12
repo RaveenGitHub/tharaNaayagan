@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/login.page";
-import { securityPayloads } from "../fixtures/test-data";
+import { LoginPage } from "../../pages/login.page";
+import { securityPayloads } from "../../fixtures/test-data";
 
 test.describe("Boundary & Input Validation Suite", () => {
   test("empty username and password submission triggers client validation error", async ({
