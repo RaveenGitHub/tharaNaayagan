@@ -25,6 +25,8 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 | Entity ID | Object Type | Entity Name | Operation | Owner | Status | Evidence | Last Updated |
 | --------- | ----------- | ---------- | --------- | ----- | ------ | -------- | ------------ |
+| AUT-API-01 | Automation | Playwright API Test Suite | Update | apiCodeGenerator | Automated | tests/apiTests/api.spec.ts | 2026-09-12T09:47:06.693Z |
+| AUT-01 | Automation | Functional Smoke Login Suite | Update | prepareFunctionalTests | Automated | tests/functional/smoke.spec.ts | 2026-09-12T09:47:06.629Z |
 | AUT-01 | Automation | Functional Smoke Login Suite | Update | prepareFunctionalTests | Automated | tests/smoke.spec.ts | 2026-09-12T09:26:42.074Z |
 | SCN-01 | Scenario | Functional Valid Login Scenario | Update | functionalScenarioCreator | Ready for Automation | docs/scenarios.md | 2026-09-12T09:26:41.960Z |
 | AUT-API-01 | Automation | Playwright API Test Suite | Create | API Automation Architect | Automated | tests/api.spec.ts | 2026-09-12T09:11:53.997Z |
@@ -40,6 +42,8 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 | Event ID | Timestamp | Object Type | Operation | Entity ID | Entity Name | Status Before | Status After | Owner | Evidence / File | Notes |
 | -------- | --------- | ---------- | --------- | --------- | ---------- | ------------- | ----------- | ----- | --------------- | ----- |
+| EVT-012 | 2026-09-12T09:47:06.693Z | Automation | Update | AUT-API-01 | Playwright API Test Suite | Automated | Automated | apiCodeGenerator | tests/apiTests/api.spec.ts | Updated for traceability |
+| EVT-011 | 2026-09-12T09:47:06.629Z | Automation | Update | AUT-01 | Functional Smoke Login Suite | Automated | Automated | prepareFunctionalTests | tests/functional/smoke.spec.ts | Updated for traceability |
 | EVT-010 | 2026-09-12T09:26:42.074Z | Automation | Update | AUT-01 | Functional Smoke Login Suite | Not Started | Automated | prepareFunctionalTests | tests/smoke.spec.ts | Updated for traceability |
 | EVT-009 | 2026-09-12T09:26:41.960Z | Scenario | Update | SCN-01 | Functional Valid Login Scenario | Draft | Ready for Automation | functionalScenarioCreator | docs/scenarios.md | Updated for traceability |
 | EVT-008 | 2026-09-12T09:11:53.997Z | Automation | Create | AUT-API-01 | Playwright API Test Suite | Not Started | Automated | API Automation Architect | tests/api.spec.ts | Created for traceability |
@@ -75,16 +79,16 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 ## Scenario execution snapshot
 
-| Scenario ID | Scenario Title                               | Owner       | Execution Status | Last Executed | Automation Status | Pass / Fail | Comments                           |
-| ----------- | -------------------------------------------- | ----------- | ---------------- | ------------- | ----------------- | ----------- | ---------------------------------- |
-| SCN-01      | User login with valid credentials            | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/smoke.spec.ts    |
-| SCN-02      | User login with invalid credentials          | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/smoke.spec.ts    |
-| SCN-03      | Session timeout or logout behavior           | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/auth.spec.ts     |
-| SCN-04      | Landing page loads after successful login    | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/smoke.spec.ts    |
-| SCN-05      | Admin-only route or action                   | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/auth.spec.ts     |
-| SCN-06      | Empty input validation on login form         | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/boundary.spec.ts |
-| SCN-07      | Attempted malicious input in credentials     | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/security.spec.ts |
-| SCN-08      | Brute force / repeated failed login attempts | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/boundary.spec.ts |
+| Scenario ID | Scenario Title                               | Owner       | Execution Status | Last Executed | Automation Status | Pass / Fail | Comments                                      |
+| ----------- | -------------------------------------------- | ----------- | ---------------- | ------------- | ----------------- | ----------- | --------------------------------------------- |
+| SCN-01      | User login with valid credentials            | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
+| SCN-02      | User login with invalid credentials          | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
+| SCN-03      | Session timeout or logout behavior           | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/auth.spec.ts     |
+| SCN-04      | Landing page loads after successful login    | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
+| SCN-05      | Admin-only route or action                   | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/auth.spec.ts     |
+| SCN-06      | Empty input validation on login form         | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/boundary.spec.ts |
+| SCN-07      | Attempted malicious input in credentials     | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/security.spec.ts |
+| SCN-08      | Brute force / repeated failed login attempts | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/boundary.spec.ts |
 
 ## Automation readiness checklist
 

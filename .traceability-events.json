@@ -118,5 +118,29 @@
     "statusAfter": "Automated",
     "owner": "prepareFunctionalTests",
     "evidence": "tests/smoke.spec.ts"
+  },
+  {
+    "eventId": "EVT-011",
+    "timestamp": "2026-09-12T09:47:06.629Z",
+    "objectType": "Automation",
+    "operation": "Update",
+    "entityId": "AUT-01",
+    "entityName": "Functional Smoke Login Suite",
+    "statusBefore": "Automated",
+    "statusAfter": "Automated",
+    "owner": "prepareFunctionalTests",
+    "evidence": "tests/functional/smoke.spec.ts"
+  },
+  {
+    "eventId": "EVT-012",
+    "timestamp": "2026-09-12T09:47:06.693Z",
+    "objectType": "Automation",
+    "operation": "Update",
+    "entityId": "AUT-API-01",
+    "entityName": "Playwright API Test Suite",
+    "statusBefore": "Automated",
+    "statusAfter": "Automated",
+    "owner": "apiCodeGenerator",
+    "evidence": "tests/apiTests/api.spec.ts"
   }
 ]

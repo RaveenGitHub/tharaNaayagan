@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/login.page";
-import { DashboardPage } from "../pages/dashboard.page";
-import { personas, loginScenarios } from "../fixtures/test-data";
-import { loginAs } from "../utils/auth";
+import { LoginPage } from "../../pages/login.page";
+import { DashboardPage } from "../../pages/dashboard.page";
+import { personas, loginScenarios } from "../../fixtures/test-data";
+import { loginAs } from "../../utils/auth";
 
 test.describe("Smoke Suite - Critical Path Validation", () => {
   test("landing page loads and login form is accessible", async ({ page }) => {

@@ -14,7 +14,7 @@ Generate clean, maintainable Playwright functional automation code following rep
 
 - Reusable Page Object Models in `pages/` extending `BasePage`
 - Centralized, accessible semantic locators in `locators/common.locators.ts` (`getByRole`, `getByLabel`, `getByTestId`)
-- Modular functional test specs in `tests/` (e.g., `tests/smoke.spec.ts`, `tests/auth.spec.ts`, `tests/boundary.spec.ts`)
+- Modular functional test specs in `tests/functional/` (e.g., `tests/functional/smoke.spec.ts`, `tests/functional/auth.spec.ts`, `tests/functional/security.spec.ts`, `tests/functional/boundary.spec.ts`)
 - Reusable fixtures and dynamic test data builders in `fixtures/test-data.ts`
 - Verification with `npm run quality-gate` and `npm test`
 

@@ -20,7 +20,8 @@ Use the README as the main source of truth for:
 npm install
 npx playwright install --with-deps
 npm run quality-gate
-npx playwright test tests/smoke.spec.ts --project=chromium --reporter=line
+npm run test:smoke
+# or: npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
 
 ## Main docs
