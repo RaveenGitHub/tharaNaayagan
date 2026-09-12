@@ -11,6 +11,7 @@
     "test:debug": "playwright test --debug",
     "test:smoke": "playwright test tests/smoke.spec.ts --project=chromium",
     "test:auth": "playwright test tests/auth.spec.ts",
+    "test:api": "playwright test tests/api.spec.ts",
     "test:security": "playwright test tests/security.spec.ts",
     "test:boundary": "playwright test tests/boundary.spec.ts",
     "test:parallel": "playwright test --workers=4",

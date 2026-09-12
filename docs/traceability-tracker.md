@@ -23,23 +23,29 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 ## Live traceability registry
 
-| Entity ID    | Object Type | Entity Name              | Operation | Owner               | Status               | Evidence                     | Last Updated             |
-| ------------ | ----------- | ------------------------ | --------- | ------------------- | -------------------- | ---------------------------- | ------------------------ |
-| TP-SYNC      | Test Plan   | Traceability Sync        | Update    | QA Lead             | Active               | manual-sync                  | 2026-09-12T07:38:42.120Z |
-| TP-TRACE-001 | Test Plan   | Manual traceability sync | Update    | QA Lead             | In Progress          | manual-check                 | 2026-09-11T21:38:33.034Z |
-| AUT-01       | Automation  | Smoke Login Test         | Create    | Automation Engineer | Automated            | tests/smoke.spec.ts          | 2026-09-11T20:51:52.187Z |
-| SCN-01       | Scenario    | Valid Login Scenario     | Create    | QA Engineer         | Ready for Automation | docs/scenarios.md            | 2026-09-11T20:51:52.130Z |
-| TP-01        | Test Plan   | Login Test Plan          | Create    | QA Lead             | Active               | docs/traceability-tracker.md | 2026-09-11T20:51:52.065Z |
+| Entity ID | Object Type | Entity Name | Operation | Owner | Status | Evidence | Last Updated |
+| --------- | ----------- | ---------- | --------- | ----- | ------ | -------- | ------------ |
+| AUT-API-01 | Automation | Playwright API Test Suite | Create | API Automation Architect | Automated | tests/api.spec.ts | 2026-09-12T09:11:53.997Z |
+| SCN-API-01 | Scenario | API Login and Contract Validation Scenarios | Create | API Test Architect | Ready for Automation | docs/api-test-plan.md | 2026-09-12T09:11:53.921Z |
+| TP-API-01 | Test Plan | API Contract and Security Test Plan | Create | API Test Architect | Active | docs/api-test-plan.md | 2026-09-12T09:11:47.915Z |
+| TP-SYNC | Test Plan | Traceability Sync | Update | QA Lead | Active | manual-sync | 2026-09-12T07:38:42.120Z |
+| TP-TRACE-001 | Test Plan | Manual traceability sync | Update | QA Lead | In Progress | manual-check | 2026-09-11T21:38:33.034Z |
+| AUT-01 | Automation | Smoke Login Test | Create | Automation Engineer | Automated | tests/smoke.spec.ts | 2026-09-11T20:51:52.187Z |
+| SCN-01 | Scenario | Valid Login Scenario | Create | QA Engineer | Ready for Automation | docs/scenarios.md | 2026-09-11T20:51:52.130Z |
+| TP-01 | Test Plan | Login Test Plan | Create | QA Lead | Active | docs/traceability-tracker.md | 2026-09-11T20:51:52.065Z |
 
 ## Lifecycle event log
 
-| Event ID | Timestamp                | Object Type | Operation | Entity ID    | Entity Name              | Status Before | Status After         | Owner               | Evidence / File              | Notes                    |
-| -------- | ------------------------ | ----------- | --------- | ------------ | ------------------------ | ------------- | -------------------- | ------------------- | ---------------------------- | ------------------------ |
-| EVT-005  | 2026-09-12T07:38:42.120Z | Test Plan   | Update    | TP-SYNC      | Traceability Sync        | Draft         | Active               | QA Lead             | manual-sync                  | Updated for traceability |
-| EVT-004  | 2026-09-11T21:38:33.034Z | Test Plan   | Update    | TP-TRACE-001 | Manual traceability sync | Draft         | In Progress          | QA Lead             | manual-check                 | Updated for traceability |
-| EVT-003  | 2026-09-11T20:51:52.187Z | Automation  | Create    | AUT-01       | Smoke Login Test         | Not Started   | Automated            | Automation Engineer | tests/smoke.spec.ts          | Created for traceability |
-| EVT-002  | 2026-09-11T20:51:52.130Z | Scenario    | Create    | SCN-01       | Valid Login Scenario     | Draft         | Ready for Automation | QA Engineer         | docs/scenarios.md            | Created for traceability |
-| EVT-001  | 2026-09-11T20:51:52.065Z | Test Plan   | Create    | TP-01        | Login Test Plan          | Draft         | Active               | QA Lead             | docs/traceability-tracker.md | Created for traceability |
+| Event ID | Timestamp | Object Type | Operation | Entity ID | Entity Name | Status Before | Status After | Owner | Evidence / File | Notes |
+| -------- | --------- | ---------- | --------- | --------- | ---------- | ------------- | ----------- | ----- | --------------- | ----- |
+| EVT-008 | 2026-09-12T09:11:53.997Z | Automation | Create | AUT-API-01 | Playwright API Test Suite | Not Started | Automated | API Automation Architect | tests/api.spec.ts | Created for traceability |
+| EVT-007 | 2026-09-12T09:11:53.921Z | Scenario | Create | SCN-API-01 | API Login and Contract Validation Scenarios | Draft | Ready for Automation | API Test Architect | docs/api-test-plan.md | Created for traceability |
+| EVT-006 | 2026-09-12T09:11:47.915Z | Test Plan | Create | TP-API-01 | API Contract and Security Test Plan | Draft | Active | API Test Architect | docs/api-test-plan.md | Created for traceability |
+| EVT-005 | 2026-09-12T07:38:42.120Z | Test Plan | Update | TP-SYNC | Traceability Sync | Draft | Active | QA Lead | manual-sync | Updated for traceability |
+| EVT-004 | 2026-09-11T21:38:33.034Z | Test Plan | Update | TP-TRACE-001 | Manual traceability sync | Draft | In Progress | QA Lead | manual-check | Updated for traceability |
+| EVT-003 | 2026-09-11T20:51:52.187Z | Automation | Create | AUT-01 | Smoke Login Test | Not Started | Automated | Automation Engineer | tests/smoke.spec.ts | Created for traceability |
+| EVT-002 | 2026-09-11T20:51:52.130Z | Scenario | Create | SCN-01 | Valid Login Scenario | Draft | Ready for Automation | QA Engineer | docs/scenarios.md | Created for traceability |
+| EVT-001 | 2026-09-11T20:51:52.065Z | Test Plan | Create | TP-01 | Login Test Plan | Draft | Active | QA Lead | docs/traceability-tracker.md | Created for traceability |
 
 ## Operational rules
 
