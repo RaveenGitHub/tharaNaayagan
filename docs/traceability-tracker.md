@@ -25,6 +25,8 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 | Entity ID | Object Type | Entity Name | Operation | Owner | Status | Evidence | Last Updated |
 | --------- | ----------- | ---------- | --------- | ----- | ------ | -------- | ------------ |
+| AUT-01 | Automation | Functional Smoke Login Suite | Update | prepareFunctionalTests | Automated | tests/smoke.spec.ts | 2026-09-12T09:26:42.074Z |
+| SCN-01 | Scenario | Functional Valid Login Scenario | Update | functionalScenarioCreator | Ready for Automation | docs/scenarios.md | 2026-09-12T09:26:41.960Z |
 | AUT-API-01 | Automation | Playwright API Test Suite | Create | API Automation Architect | Automated | tests/api.spec.ts | 2026-09-12T09:11:53.997Z |
 | SCN-API-01 | Scenario | API Login and Contract Validation Scenarios | Create | API Test Architect | Ready for Automation | docs/api-test-plan.md | 2026-09-12T09:11:53.921Z |
 | TP-API-01 | Test Plan | API Contract and Security Test Plan | Create | API Test Architect | Active | docs/api-test-plan.md | 2026-09-12T09:11:47.915Z |
@@ -38,6 +40,8 @@ This tracker provides end-to-end visibility from the test strategy to the execut
 
 | Event ID | Timestamp | Object Type | Operation | Entity ID | Entity Name | Status Before | Status After | Owner | Evidence / File | Notes |
 | -------- | --------- | ---------- | --------- | --------- | ---------- | ------------- | ----------- | ----- | --------------- | ----- |
+| EVT-010 | 2026-09-12T09:26:42.074Z | Automation | Update | AUT-01 | Functional Smoke Login Suite | Not Started | Automated | prepareFunctionalTests | tests/smoke.spec.ts | Updated for traceability |
+| EVT-009 | 2026-09-12T09:26:41.960Z | Scenario | Update | SCN-01 | Functional Valid Login Scenario | Draft | Ready for Automation | functionalScenarioCreator | docs/scenarios.md | Updated for traceability |
 | EVT-008 | 2026-09-12T09:11:53.997Z | Automation | Create | AUT-API-01 | Playwright API Test Suite | Not Started | Automated | API Automation Architect | tests/api.spec.ts | Created for traceability |
 | EVT-007 | 2026-09-12T09:11:53.921Z | Scenario | Create | SCN-API-01 | API Login and Contract Validation Scenarios | Draft | Ready for Automation | API Test Architect | docs/api-test-plan.md | Created for traceability |
 | EVT-006 | 2026-09-12T09:11:47.915Z | Test Plan | Create | TP-API-01 | API Contract and Security Test Plan | Draft | Active | API Test Architect | docs/api-test-plan.md | Created for traceability |

@@ -109,9 +109,11 @@ By the end of this guide, you should be able to:
 │   ├── smoke.spec.ts
 │   ├── auth.spec.ts
 │   ├── security.spec.ts
-│   └── boundary.spec.ts
+│   ├── boundary.spec.ts
+│   └── api.spec.ts
 ├── utils/
-│   └── auth.ts
+│   ├── auth.ts
+│   └── api-client.ts
 ├── .githooks/
 │   └── pre-commit
 ├── eslint.config.mjs
@@ -127,6 +129,37 @@ By the end of this guide, you should be able to:
 ├── .traceability-events.json
 └── .gitignore
 ```
+
+---
+
+## AI Agents & Dual-Track Automation Architecture
+
+This repository incorporates an AI Agent ecosystem architected into two specialized validation tracks anchored by a master strategy engine:
+
+```mermaid
+graph TD
+    S["Startergist Agent<br/>(Master Test Strategy & Quality Governance)"] --> F1["functionalScenarioCreator Agent<br/>(Gherkin & Functional UI Scenarios)"]
+    S --> A1["apiTestPlan Agent<br/>(API Endpoint Contracts & Security Plan)"]
+
+    F1 --> F2["prepareFunctionalTests Agent<br/>(TypeScript POM, Accessible Locators & UI Specs)"]
+    A1 --> A2["apiCodeGenerator Agent<br/>(Playwright API Client & API Test Specs)"]
+
+    F2 --> E["Playwright Test Runner & Allure Governance"]
+    A2 --> E
+```
+
+### 1. Functional & UI Track
+
+- **`Startergist`** ([.github/agents/startergist.agent.md](.github/agents/startergist.agent.md)): Produces enterprise quality strategies, risk priorities, and governance metrics.
+- **`functionalScenarioCreator`** ([.github/agents/functionalScenarioCreator.agent.md](.github/agents/functionalScenarioCreator.agent.md)): Generates traceable Gherkin specifications and detailed UI test cases.
+- **`prepareFunctionalTests`** ([.github/agents/prepareFunctionalTests.agent.md](.github/agents/prepareFunctionalTests.agent.md)): Translates functional designs into Playwright Page Objects (`pages/`) and test specs (`tests/smoke.spec.ts`, `tests/auth.spec.ts`, `tests/security.spec.ts`, `tests/boundary.spec.ts`).
+
+### 2. API Automation Track
+
+- **`apiTestPlan`** ([.github/agents/apiTestPlan.agent.md](.github/agents/apiTestPlan.agent.md)): Analyzes endpoints and designs contract, negative, and OWASP API Top 10 security test plans.
+- **`apiCodeGenerator`** ([.github/agents/apiCodeGenerator.agent.md](.github/agents/apiCodeGenerator.agent.md)): Implements executable Playwright `APIRequestContext` tests and reusable helpers (`utils/api-client.ts`, `tests/api.spec.ts`).
+
+---
 
 ---
 

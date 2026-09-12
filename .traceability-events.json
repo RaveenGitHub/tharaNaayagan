@@ -94,5 +94,29 @@
     "statusAfter": "Automated",
     "owner": "API Automation Architect",
     "evidence": "tests/api.spec.ts"
+  },
+  {
+    "eventId": "EVT-009",
+    "timestamp": "2026-09-12T09:26:41.960Z",
+    "objectType": "Scenario",
+    "operation": "Update",
+    "entityId": "SCN-01",
+    "entityName": "Functional Valid Login Scenario",
+    "statusBefore": "Draft",
+    "statusAfter": "Ready for Automation",
+    "owner": "functionalScenarioCreator",
+    "evidence": "docs/scenarios.md"
+  },
+  {
+    "eventId": "EVT-010",
+    "timestamp": "2026-09-12T09:26:42.074Z",
+    "objectType": "Automation",
+    "operation": "Update",
+    "entityId": "AUT-01",
+    "entityName": "Functional Smoke Login Suite",
+    "statusBefore": "Not Started",
+    "statusAfter": "Automated",
+    "owner": "prepareFunctionalTests",
+    "evidence": "tests/smoke.spec.ts"
   }
 ]
