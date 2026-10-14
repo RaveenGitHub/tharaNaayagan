@@ -37,7 +37,7 @@ Use this structure directly. Adhere to patterns in existing files.
 ## Required Workflow
 
 1. Identify the requested requirement/scenario IDs, run `npm run impact:analyze -- <IDs>`, and summarize impacted tests, Page Objects, fixtures, utilities, configs, and plan/strategy sections before editing.
-2. If acceptance criteria, target environment, or scope expansion is unclear or materially changes behavior, ask the user before implementation. Do not add adjacent-scope tests without confirmation.
+2. Consume the JSON impact signal once and present severity, module/scope, registered risk, required updates, test-data impact, and validation selection. Read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; impact signals are not approval. Ask when acceptance criteria or target environment is incomplete.
 3. Extend or create Page Objects in `pages/` following the `BasePage` contract.
 4. Update or centralize locators in `locators/common.locators.ts`.
 5. Implement only the approved, risk-relevant scenarios under `tests/functional/`.

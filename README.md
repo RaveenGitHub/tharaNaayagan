@@ -107,6 +107,8 @@ By the end of this guide, you should be able to:
 │   └── login.html
 ├── scripts/
 │   ├── analyze-impact.mjs
+│   ├── analyze-impact.test.mjs
+│   ├── target-policy.test.mjs
 │   ├── traceability.mjs
 │   ├── validate-traceability.mjs
 │   └── validate-traceability.test.mjs
@@ -216,16 +218,23 @@ The supported runtime is Node.js 22.x, recorded in `package.json` and `.nvmrc`; 
 
 The quality gate runs lint, TypeScript, framework regression tests, traceability validation, and `npm audit --audit-level=high`. Traceability checks require each named test to have a requirement ID and one or more scenario IDs, with mappings resolving to their functional/API plan and referenced strategy section. Automated scenarios must have runnable declarations; skipped/fixme-only coverage, missing or mismatched functional plan test targets, and conflicting automation statuses fail. Static string and template-literal titles are supported; dynamic titles and conditional skip/fixme calls require an explicit review and are rejected by the static gate. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API. Static validation is not execution evidence.
 
-Run `npm run test:framework` for focused governance regression tests. Run `npm run report:generate` to generate an Allure report or `npm run report` to generate and open it. Allure report generation additionally requires Java installed and available on PATH (or through `JAVA_HOME`); the CLI dependency does not install Java. CI currently archives raw Allure results, not rendered Allure reports.
+Run `npm run test:framework` for focused traceability, target-policy/API-client, and impact-analysis regression tests. These isolated Node tests do not call a live service. Run `npm run report:generate` to generate an Allure report or `npm run report` to generate and open it. Allure report generation additionally requires Java installed and available on PATH (or through `JAVA_HOME`); the CLI dependency does not install Java. CI currently archives raw Allure results, not rendered Allure reports.
+
+Browser and API-client targets share the central target policy. Malformed configured QA/UAT/production URLs, unsupported protocols, and embedded URL credentials fail explicitly even for local runs. Remote browsers additionally require all dedicated persona credentials; blank or known demo values are rejected without exposing their values.
 
 Before changing a requirement or scenario, run the focused impact scan to locate related plans, tests, POMs, fixtures, utilities, and configuration:
 
 ```bash
 npm run impact:analyze -- REQ-API-01
 npm run impact:analyze -- REQ-API-01 SCN-API-05
+npm run impact:analyze -- pages/login.page.ts --json
 ```
 
-The scan reports exact repository references; it does not infer dependencies or modify files. Review the results against the approved requirement and keep changes within the affected module.
+The scan resolves canonical tracker IDs and repository paths, follows static imports/reexports and TypeScript aliases, and identifies reverse-transitive consumers plus their dependencies. Shared execution configuration selects all browser test files. JSON includes technical severity and rationale, modules, scenarios, registered risks, artifacts, document references, strategy sections, test-data review, required actions, validation commands, approval needs, and scan size. Unmatched inputs exit nonzero; no files are modified.
+
+This is conservative file-level analysis: sibling scenarios can be included. Runtime UI/network links, computed dependencies, deleted files, and external requirement systems are not inferred; affected unresolved imports are surfaced for review. Technical severity is not an owner-approved business risk score. Consume the compact signal once, inspect only impacted artifacts, and confirm before material behavior/contract changes, live targets, cross-module expansion, bulk additions, or new thresholds. Production execution is prohibited. Planning agents without execution tools request the report; guidance does not replace human approval.
+
+Update linked documents and metadata together and rerun the gate; semantic documentation synchronization and normalized KPI/trend reporting are not yet automated.
 
 Common commands:
 

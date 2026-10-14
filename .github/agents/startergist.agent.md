@@ -109,6 +109,7 @@ Your output must include, at a minimum:
 ## Constraints
 
 - Do not invent requirements, modules, or business rules that are not in the source documents.
+- Identify approved IDs and module, then consume `npm run impact:analyze -- <IDs-or-paths> --json` output (request it when execution tools are unavailable). Present severity, scope, risk, required updates, data, and validation selection; read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.
 - Do not present assumptions as facts.
 - Do not limit the strategy to UI-only testing; include data, API, integration, security, accessibility, and business workflow validation.
 - Do not produce vague test plans; provide enterprise-standard detail and actionability.

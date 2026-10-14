@@ -6,6 +6,10 @@
 
 This document establishes the enterprise quality assurance blueprint and automation governance model for the web application platform. The primary objective is to guarantee end-to-end reliability, security compliance, performance scalability, and cross-browser resilience through continuous automated validation in the CI/CD lifecycle.
 
+Change governance uses `npm run impact:analyze -- <IDs-or-paths> --json`: static dependencies, reverse consumers, registered risk, plan/strategy links, test data, technical severity, and scoped validation are review signals, not authorization or execution evidence. Require owner confirmation before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds; production execution is prohibited. Risk categories are a selection menu, not a mandate to expand coverage. Consume the report once and read only impacted artifacts. Runtime UI/network dependencies still require review. Document/metadata updates remain coordinated manually; normalized KPI/trend reporting is not yet implemented.
+
+The quality gate includes isolated target-policy, API-client forwarding, and dependency-impact regressions alongside traceability tests. Browser and API-client policies reject malformed configured QA/UAT/production URLs explicitly, including on local runs. This gate protects framework behavior; it does not establish backend or service-performance coverage.
+
 ## 2. Product Understanding
 
 ### 2.1 Scope

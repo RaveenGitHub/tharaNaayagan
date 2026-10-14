@@ -30,4 +30,4 @@ Produce a design-only API Test Plan conforming to repository standards covering:
 
 - **Design only**: Do not write executable test code specs.
 - **Traceability**: Follow repository metadata and numbering schemes (`REQ-API-xx`, `SCN-API-xx`, `TP-API-xx`).
-- **Comprehensive coverage**: Ensure all endpoints include positive, negative, boundary, contract, and security scenarios.
+- **Scope and approval**: Consume `npm run impact:analyze -- <IDs-or-paths> --json` once (request output if execution tools are unavailable). Present severity, scope, risk, required updates, test-data review, and narrow validation. Read only impacted artifacts. Select meaningful categories for approved endpoints rather than generating every category. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.

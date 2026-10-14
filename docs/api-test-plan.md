@@ -12,6 +12,8 @@ This document defines the comprehensive API Test Plan for the platform's backend
 
 The `example.com` endpoints and sample credentials in this plan are placeholders for planning/mock flows only. They are not approved service targets or usable shared-environment credentials.
 
+Production execution is prohibited. Before changing approved scenarios or artifacts, consume `npm run impact:analyze -- <IDs-or-paths> --json` and review dependency, plan/strategy, risk, and test-data signals. Confirm material contract/behavior changes, live targets, cross-module expansion, bulk additions, and new thresholds with the owner. Update linked metadata/documents together; semantic propagation is manual. Framework target/API-client regressions run without network access and do not establish live API coverage. Invalid configured QA/UAT/production URLs fail explicitly, including during local runs.
+
 | Environment | Base URL                  | API Base URL                  | Auth Mechanism          |
 | :---------- | :------------------------ | :---------------------------- | :---------------------- |
 | **DEV**     | `http://127.0.0.1:4173`   | `http://127.0.0.1:4173/api`   | Bearer Token / Mock JWT |

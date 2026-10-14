@@ -10,12 +10,14 @@ Use this prompt to convert an API Test Plan into complete, production-ready Play
 
 The current API suite uses browser-intercepted mock responses, not a live service. Keep work mock-scoped unless the API owner supplies an approved OpenAPI contract, endpoint, authentication policy, environment, and safe test-data rules. Ask before changing this target, and do not describe mock results as backend validation.
 
+Consume `npm run impact:analyze -- <IDs-or-paths> --json` once before editing. Present severity, scope, risk, dependencies, required updates, data, and validation selection; read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.
+
 ## Goal
 
 Transform designed API scenarios marked "Ready for Automation" into executable Playwright TypeScript API tests covering:
 
 - Dedicated API request client helpers in `utils/api-client.ts` with auto-header and correlation ID handling
-- Environment switching and base URL resolution from `config/environments.ts` (DEV/QA/UAT/PROD)
+- Environment switching from `config/environments.ts` (local/mock or approved QA/UAT only)
 - Persona-based token and authentication management (`Admin`, `User`, `Guest`, `API Client`)
 - Status code assertions, contract & response schema validations, and error structure verification
 - Security testing suites (OWASP API Top 10, SQLi, NoSQLi, auth bypass, BOLA/IDOR)

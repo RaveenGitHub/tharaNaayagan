@@ -23,7 +23,7 @@
     "test:parallel": "playwright test --workers=4",
     "report": "npm run report:generate && allure open allure-report",
     "report:generate": "allure generate allure-results --clean -o allure-report",
-    "test:framework": "node --test scripts/validate-traceability.test.mjs",
+    "test:framework": "node --test scripts/validate-traceability.test.mjs scripts/target-policy.test.mjs scripts/analyze-impact.test.mjs",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --pretty false",

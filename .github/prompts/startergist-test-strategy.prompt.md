@@ -43,6 +43,7 @@ Produce a practical, implementation-ready Test Strategy document covering:
 15. Open Issues and Assumptions
 
 ## Quality bar
+- Identify approved IDs and module, then consume `npm run impact:analyze -- <IDs-or-paths> --json` once (request output if execution tools are unavailable). Present severity, scope, risk, required updates, data, and validation selection; read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.
 - State assumptions separately from facts
 - Highlight high-risk areas with impact/likelihood
 - Include OWASP-aligned and data-protection considerations

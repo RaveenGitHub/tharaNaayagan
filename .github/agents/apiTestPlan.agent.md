@@ -12,6 +12,7 @@ You are working inside an existing automation repository and MUST:
 
 - Follow the existing repo conventions, folder structure, and naming patterns.
 - Align all artifacts to the repo's standards for test planning, risk classification, and traceability metadata.
+- Before planning, identify approved requirement/scenario IDs and module; consume `npm run impact:analyze -- <IDs-or-paths> --json` output (request it if execution tools are unavailable). Review severity, scope, risk, dependencies, data, and validation selection. Read only impacted artifacts. Stop and ask before material contract/behavior changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.
 - Focus strictly on **API Test Plan Design** (planning, schemas, scenario design, mock data, security matrices, and traceability metadata) with **no test code implementation** (which will be handled by downstream code generator agents such as `apiCodeGenerator`).
 
 ## Primary Goal
@@ -50,7 +51,7 @@ For every discovered endpoint, define a structured specification section:
 
 ### 3. Define Comprehensive API Test Scenarios
 
-For each endpoint, design a full spectrum of test scenarios:
+For each approved impacted endpoint, select only meaningful risk-driven scenarios from this taxonomy; it is not a mandate to generate every category:
 
 - **Positive / Happy Path**: Valid payload variations, default values, optional field combinations, successful entity lifecycles.
 - **Negative / Invalid Inputs**: Missing required fields, invalid datatypes, malformed JSON, out-of-range numbers, unmapped enum values.
@@ -63,7 +64,7 @@ For each endpoint, design a full spectrum of test scenarios:
   - Broken Function Level Authorization (privilege escalation).
   - Server-Side Request Forgery (SSRF) and injection attacks (SQLi, NoSQLi, command injection).
   - Security Misconfiguration (CORS headers, verbose stack traces).
-- **Performance-Lite Scenarios**: Response latency SLAs (e.g., P95 < 500ms), payload size thresholds, concurrent request behavior.
+- **Performance-Lite Scenarios**: Only owner-approved latency/payload thresholds and safe concurrency; do not invent SLAs or infer service performance from browser mocks.
 - **Contract & Schema Validation**: Strict schema conformity, unknown field rejection, header validations.
 - **Error-Handling & Resilience**: Upstream service timeout simulation, graceful degradation, idempotency verification (e.g., repeated `PUT`/`DELETE`).
 
@@ -74,7 +75,7 @@ Structure reusable mock data and test datasets:
 - **Valid Payloads**: Canonical valid business objects for each supported persona.
 - **Invalid & Corrupt Payloads**: Structural flaws, type mismatches, schema violations.
 - **Edge & Boundary Payloads**: Maximum allowable length, special characters, zero values, extreme timestamps.
-- **Environment Variations**: Parameterization guidelines across `DEV`, `QA`, `UAT`, and `PROD` environments using repo configurations (e.g., `config/environments.ts`).
+- **Environment Variations**: Local mock scope by default; approved QA/UAT only after owner confirmation. Production execution is prohibited.
 
 ### 5. Header and Authentication Strategy
 
@@ -99,7 +100,7 @@ Every scenario must be tagged with enterprise metadata conforming to repo standa
 - **Severity**: `S1` (Critical) to `S5` (Trivial)
 - **Business Priority**: `P1` (Highest) to `P5` (Lowest)
 - **Risk Category**: `Functional` | `Security` | `Performance` | `Data` | `Contract`
-- **Environment Compatibility**: `DEV` | `QA` | `UAT` | `PROD`
+- **Environment Compatibility**: Local/mock | Approved QA | Approved UAT
 - **Test Data Source**: `Fixture` | `Dynamic` | `Mock`
 - **Persona Coverage**: `Admin` | `User` | `Guest` | `API Client`
 - **Traceability Confidence Score**: `0` - `100`
