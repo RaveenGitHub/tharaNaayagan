@@ -210,7 +210,7 @@ npm run traceability:validate
 npx playwright test --project=chromium --reporter=line
 ```
 
-The quality gate validates that each named test has a requirement ID and one or more scenario IDs, and that each mapping resolves to its functional/API plan and referenced strategy section. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API.
+The quality gate runs lint, TypeScript, traceability validation, and `npm audit --audit-level=high`. Traceability checks require each named test to have a requirement ID and one or more scenario IDs, with mappings resolving to their functional/API plan and referenced strategy section. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API.
 
 Common commands:
 

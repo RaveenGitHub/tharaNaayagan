@@ -10,6 +10,8 @@ This document defines the comprehensive API Test Plan for the platform's backend
 
 ## 2. API Architecture & Environment Endpoints
 
+The `example.com` endpoints and sample credentials in this plan are placeholders for planning/mock flows only. They are not approved service targets or usable shared-environment credentials.
+
 | Environment | Base URL                  | API Base URL                  | Auth Mechanism          |
 | :---------- | :------------------------ | :---------------------------- | :---------------------- |
 | **DEV**     | `http://127.0.0.1:4173`   | `http://127.0.0.1:4173/api`   | Bearer Token / Mock JWT |
@@ -96,3 +98,5 @@ API scenarios are defined in this plan and mapped to the tracker for current exe
 ## 7. Current Automation Evidence Boundary
 
 The current API-named tests use `page.route()` and browser `fetch()` against intercepted responses. They do not call a service through `APIRequestContext`, and passing results establish only the defined browser/mock flow. The authenticated profile scenario (`SCN-API-08`) is asserted alongside `SCN-API-07` in the current mocked profile test. Before adding real service tests, obtain the approved OpenAPI/contract source, environment endpoint, authentication method, and safe test-data policy from the API owner.
+
+The reusable `ApiClient` rejects non-local requests unless `ALLOW_NON_LOCAL_TEST_TARGET=true` and the URL matches configured QA/UAT origins. Configured production origins are always rejected. Use dedicated test credentials and an owner-approved isolated environment; local demo defaults are not valid shared-environment credentials.

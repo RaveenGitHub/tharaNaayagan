@@ -1,5 +1,9 @@
 import type { APIRequestContext, APIResponse } from "@playwright/test";
-import { getEnvironment, type EnvironmentName } from "../config/environments";
+import {
+  assertTestTargetAllowed,
+  getEnvironment,
+  type EnvironmentName,
+} from "../config/environments";
 
 export interface RequestOptions {
   headers?: Record<string, string>;
@@ -37,11 +41,14 @@ export class ApiClient {
 
   private resolveUrl(endpoint: string): string {
     if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
+      assertTestTargetAllowed(endpoint);
       return endpoint;
     }
     const cleanBase = this.baseUrl.replace(/\/+$/, "");
     const cleanEndpoint = endpoint.replace(/^\/+/, "");
-    return `${cleanBase}/${cleanEndpoint}`;
+    const url = `${cleanBase}/${cleanEndpoint}`;
+    assertTestTargetAllowed(url);
+    return url;
   }
 
   async get(endpoint: string, options?: RequestOptions): Promise<APIResponse> {

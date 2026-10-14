@@ -64,11 +64,11 @@ This plan records only the behavior present in the local static demo and its cur
 | Requirement ID | Scenario ID | Scenario | Risk / Priority | Automation target |
 | --- | --- | --- | --- | --- |
 | REQ-AUTO-01 | SCN-AUTO-01 | Authentication helper completes a login. | Low / P3 | `tests/functional/smoke.spec.ts` |
-| REQ-AUTO-01 | SCN-AUTO-02 | API client utility can be initialized. | Low / P3 | `tests/apiTests/api.spec.ts` |
+| REQ-AUTO-01 | SCN-AUTO-02 | API client blocks an unapproved non-local target. | Medium / P2 | `tests/apiTests/api.spec.ts` |
 
 ## Scope limits and change impact
 
 - UI tests run against the repository's local static pages. They do not establish backend authentication, authorization, rate-limit, persistence, or service-side input-security behavior.
-- The API test plan is exercised through browser-intercepted mock responses. The API cases do not call a real service.
+- The API test plan is exercised through browser-intercepted mock responses. The API cases do not call a real service. API client requests to non-local origins require explicit opt-in and a configured QA/UAT origin; production origins are rejected.
 - For a requirement change, locate the Requirement ID and Scenario ID above, update the impacted plan row and strategy risk/scope references, then update its listed test, POM, fixture, utility, or config as applicable. Re-run `npm run traceability:validate` and the narrowest affected suite.
 - Confirm acceptance criteria, API contract, target environment, and any expansion beyond the listed module with the owner before making material changes. Do not add adjacent-scope tests without approval.

@@ -51,7 +51,7 @@ The recorded local browser-matrix run on 2026-10-14 passed all 57 tests across C
 | REQ-API-02 | API profile (mocked) | TP-API-01 | SCN-API-07 | Missing authorization returns 401 | High | P1 | Mocked API-flow / Security | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | No live API service is called. |
 | REQ-API-02 | API profile (mocked) | TP-API-01 | SCN-API-08 | Authenticated profile returns the caller's profile | High | P1 | Mocked API-flow / Contract | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | Verified in the same test as SCN-API-07; no live API service is called. |
 | REQ-AUTO-01 | Automation support | TP-AUTO-01 | SCN-AUTO-01 | Authentication helper completes a login | Low | P3 | Automation utility | Passed | Automated | 100 | 0 | Automation Engineer | Local mock / Chromium | 2026-10-14 | Tracks `loginAs` helper behavior. |
-| REQ-AUTO-01 | Automation support | TP-AUTO-01 | SCN-AUTO-02 | API client utility is initialized | Low | P3 | Automation utility | Passed | Automated | 100 | 0 | Automation Engineer | Local mock / Chromium | 2026-10-14 | Availability assertion only; headers and endpoint resolution are not verified. |
+| REQ-AUTO-01 | Environment safety | TP-AUTO-01 | SCN-AUTO-02 | API client blocks an unapproved non-local target | Medium | P2 | Configuration / Safety | Passed | Automated | 100 | 0 | Automation Engineer | Local mock / Chromium | 2026-10-14 | Non-local targets require explicit opt-in and must match configured QA/UAT origins; production is blocked. |
 
 ## Execution snapshot
 

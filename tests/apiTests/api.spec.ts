@@ -188,7 +188,23 @@ test.describe("Mocked API Flow Suite - Contract and Response Checks", () => {
     expect(authResult.data.user).toBe("Admin");
   });
 
-  test("REQ-AUTO-01 SCN-AUTO-02: ApiClient utility is available", async () => {
+  test("REQ-AUTO-01 SCN-AUTO-02: ApiClient blocks an unapproved non-local target", async ({
+    request,
+  }) => {
     expect(apiClient).toBeDefined();
+
+    const originalOptIn = process.env.ALLOW_NON_LOCAL_TEST_TARGET;
+    delete process.env.ALLOW_NON_LOCAL_TEST_TARGET;
+    try {
+      await expect(
+        new ApiClient(request, "qa").get("/v1/user/profile"),
+      ).rejects.toThrow(/Non-local test target is blocked/);
+    } finally {
+      if (originalOptIn === undefined) {
+        delete process.env.ALLOW_NON_LOCAL_TEST_TARGET;
+      } else {
+        process.env.ALLOW_NON_LOCAL_TEST_TARGET = originalOptIn;
+      }
+    }
   });
 });
