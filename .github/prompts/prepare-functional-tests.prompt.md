@@ -25,3 +25,5 @@ Generate clean, maintainable Playwright functional automation code following rep
 - Existing POM classes in `pages/`
 
 Before editing, run `npm run impact:analyze -- <requirement-or-scenario-ID>` and summarize the impacted requirement/scenario, tests, Page Objects, fixtures, utilities, configuration, test-plan section, and strategy section. Ask the user when acceptance criteria, target environment, or a material scope change is unclear. Keep additions risk-relevant and within the affected module; update linked documentation and run `npm run traceability:validate`.
+
+Consume JSON output once, present severity, scope, risk, required updates, data, and validation selection, and read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.

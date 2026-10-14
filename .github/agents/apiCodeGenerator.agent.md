@@ -15,6 +15,7 @@ You are working inside an existing automation repository and MUST:
 - Align all test files, fixtures, and utilities to the repo’s patterns.
 - Current API specs use browser-intercepted mock responses. Keep additions at that mock-flow layer unless the API owner supplies an approved contract, endpoint, auth policy, environment, and safe test-data rules. Never describe mock results as live service validation.
 - Implement only impacted scenarios approved as ready for automation. Do not expand into adjacent OWASP, performance, or lifecycle coverage without a requirement and owner confirmation.
+- Consume `npm run impact:analyze -- <IDs-or-paths> --json` once before editing. Present scope, technical severity, registered risk, required updates, test-data review, and narrow validation. Read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk generation, or new thresholds. Production is prohibited; the signal is not approval.
 
 ## Goal
 
@@ -30,7 +31,7 @@ Generate complete API automation test scripts for all scenarios marked **“Read
 - **Endpoint Specifications**: Ingest endpoint details (paths, HTTP methods, parameters, request/response bodies).
 - **Scenario Metadata**: Review risk levels, business priorities, persona requirements, and environment compatibilities.
 - **Security & Mocks**: Extract mock schemas, error contracts, and OWASP API Top 10 security validation cases.
-- **Change Impact**: Before editing, run `npm run impact:analyze -- <requirement-or-scenario-ID>` and review matching tests, plans, fixtures, utilities, and configuration. Treat the report as a reference search, not as approval to widen scope.
+- **Change Impact**: Reuse the dependency-aware impact report above; it is not approval to widen scope.
 
 ### 2. Leverage Playwright
 
@@ -52,20 +53,20 @@ Generate complete API automation test scripts for all scenarios marked **“Read
 - **Business Rule Validations**: Validate state changes, token payloads, claims, and entity relationships.
 - **Error Response Assertions**: Check structured error message contracts, field-level errors, and error codes.
 - **Security Validations**: Implement OWASP API Top 10 checks (BOLA/IDOR, authentication bypass, SQLi/NoSQLi injections, mass assignment, security headers).
-- **Rate Limit & Performance-Lite**: Validate response latency thresholds (e.g., P95 < 500ms) and rate limit headers.
+- **Rate Limit & Performance-Lite**: Validate only owner-approved thresholds and contract headers. Do not invent SLAs or claim service performance from browser mocks.
 - **Idempotency & Data Handling**: Verify repeated requests (e.g., `PUT`, `DELETE`), pagination query parameters, and filter handling.
 
 ### 5. Create Test Data Fixtures
 
 - **Payload Engineering**: Define valid, invalid, boundary, and edge-case request bodies.
 - **Dynamic Data Generation**: Integrate dynamic timestamps, UUIDs, and random strings where required.
-- **Environment Parameterization**: Support `DEV`, `QA`, `UAT`, and `PROD` variations.
+- **Environment Parameterization**: Local mocks by default; QA/UAT only with owner-approved targets and data. Production is prohibited.
 - **Centralized Placement**: Maintain fixtures under `fixtures/test-data.ts` or `fixtures/api/`.
 
 ### 6. Handle Environment Switching
 
 - **Config Integration**: Use repository environment configs (`config/environments.ts`).
-- **Base URLs & Routing**: Resolve target host and API base URLs per environment (`DEV`, `QA`, `UAT`, `PROD`).
+- **Base URLs & Routing**: Resolve target host and API base URLs for local/mock or owner-approved QA/UAT targets only.
 - **Secure Secret Management**: Securely load tokens and passwords from `process.env` without hardcoding sensitive data.
 - **Environment-Aware Headers**: Manage environment-specific auth headers and tenant keys.
 
@@ -78,7 +79,7 @@ Attach standardized test annotations and metadata to each generated test:
 - **Endpoint**: e.g., `POST /api/v1/auth/login`
 - **Automation Status**: `Generated` | `Needs Review` | `Approved`
 - **Test Data Source**: `Fixture` | `Dynamic` | `Mock` | `DB` | `API`
-- **Environment Compatibility**: `DEV` | `QA` | `UAT` | `PROD`
+- **Environment Compatibility**: Local/mock | Approved QA | Approved UAT
 - **Severity & Priority**: `S1–S5`, `P1–P5`
 - **Risk Category**: `Functional` | `Security` | `Performance` | `Contract` | `Data`
 - **Persona Coverage**: `Admin` | `User` | `Guest` | `API Client`

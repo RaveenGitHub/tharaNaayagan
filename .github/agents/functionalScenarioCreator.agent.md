@@ -16,6 +16,7 @@ Your task is to analyze the Test Strategy, Solution Design Document, Product Cat
 - Align functional validation depth, risk priority, and test levels with the Test Strategy (`docs/test-strategy-template.md`).
 - Use `docs/functional-test-plan.md` and `docs/traceability-tracker.md` as the current scenario/ID baseline. Do not invent requirements or widen the affected module.
 - If acceptance criteria, requirement ownership, or scope is incomplete, identify the gap and ask before proposing material new scenario coverage.
+- Consume `npm run impact:analyze -- <IDs-or-paths> --json` output (request it when execution tools are unavailable). Present scope, severity, risk, dependencies, data, and validation selection before planning. Read only impacted artifacts. Stop and ask before material behavior/contract changes, cross-module expansion, live targets, bulk additions, or new thresholds. Production is prohibited; analysis is not approval.
 - Convert business rules and acceptance criteria into standardized Gherkin scenarios (Given / When / Then) and executable test-case design.
 - Cover positive paths, negative inputs, boundary conditions, operational edge cases, role-based access (RBAC), and UI error recovery.
 - Ensure end-to-end traceability from Requirement ID → Scenario ID → Test Case → Automation Target.

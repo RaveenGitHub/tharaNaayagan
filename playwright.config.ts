@@ -1,47 +1,9 @@
 import { defineConfig, devices } from "@playwright/test";
 import "dotenv/config";
-import {
-  assertTestTargetAllowed,
-  isLocalTestTarget,
-} from "./config/environments";
+import { assertBrowserTestTargetAllowed } from "./config/environments";
 
 const baseURL = process.env.BASE_URL || "http://127.0.0.1:4173";
-assertTestTargetAllowed(baseURL);
-
-if (!isLocalTestTarget(baseURL)) {
-  const credentialVariables = [
-    "E2E_ADMIN_USER",
-    "E2E_ADMIN_PASSWORD",
-    "E2E_USER_USER",
-    "E2E_USER_PASSWORD",
-    "E2E_GUEST_USER",
-    "E2E_GUEST_PASSWORD",
-    "E2E_API_USER",
-    "E2E_API_PASSWORD",
-  ];
-  const missingCredentials = credentialVariables.filter(
-    (name) => !process.env[name]?.trim(),
-  );
-  const demoCredentialValues = new Set([
-    "admin@example.com",
-    "Admin@123",
-    "user@example.com",
-    "User@123",
-    "guest@example.com",
-    "Guest@123",
-    "api.client@example.com",
-    "Api@123",
-  ]);
-  const defaultCredentials = credentialVariables.filter((name) =>
-    demoCredentialValues.has(process.env[name] ?? ""),
-  );
-
-  if (missingCredentials.length > 0 || defaultCredentials.length > 0) {
-    throw new Error(
-      `Non-local test targets require environment-specific credentials for every persona. Missing: ${missingCredentials.join(", ") || "none"}; local demo defaults present: ${defaultCredentials.join(", ") || "none"}.`,
-    );
-  }
-}
+assertBrowserTestTargetAllowed(baseURL);
 
 const reporters: Array<[string] | [string, Record<string, unknown>]> = [
   ["list"],

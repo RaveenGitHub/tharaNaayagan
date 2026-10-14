@@ -33,6 +33,20 @@ export function isLocalTestTarget(target: string): boolean {
   return ["localhost", "127.0.0.1", "[::1]"].includes(hostname);
 }
 
+function configuredOrigin(name: string, fallback: string): string {
+  const target = process.env[name] ?? fallback;
+  let url: URL;
+  try {
+    url = new URL(target);
+  } catch {
+    throw new Error(`Invalid configured test target URL: ${name}.`);
+  }
+  if (!["http:", "https:"].includes(url.protocol) || url.username || url.password) {
+    throw new Error(`Configured test target ${name} must be an HTTP(S) URL without embedded credentials.`);
+  }
+  return url.origin;
+}
+
 export function assertTestTargetAllowed(target: string): void {
   let url: URL;
   try {
@@ -50,19 +64,17 @@ export function assertTestTargetAllowed(target: string): void {
     );
   }
 
-  const productionTargets = [
-    process.env.PROD_BASE_URL || "https://example.com",
-    process.env.PROD_API_BASE_URL || "https://example.com/api",
+  const productionOrigins = [
+    configuredOrigin("PROD_BASE_URL", "https://example.com"),
+    configuredOrigin("PROD_API_BASE_URL", "https://example.com/api"),
   ];
-  if (
-    productionTargets.some((productionTarget) => {
-      try {
-        return new URL(productionTarget).origin === url.origin;
-      } catch {
-        return false;
-      }
-    })
-  ) {
+  const approvedNonLocalOrigins = [
+    configuredOrigin("QA_BASE_URL", "https://qa.example.com"),
+    configuredOrigin("QA_API_BASE_URL", "https://qa.example.com/api"),
+    configuredOrigin("UAT_BASE_URL", "https://uat.example.com"),
+    configuredOrigin("UAT_API_BASE_URL", "https://uat.example.com/api"),
+  ];
+  if (productionOrigins.includes(url.origin)) {
     throw new Error("Production targets are not permitted for automated tests.");
   }
 
@@ -78,16 +90,34 @@ export function assertTestTargetAllowed(target: string): void {
     );
   }
 
-  const approvedNonLocalOrigins = [
-    process.env.QA_BASE_URL || "https://qa.example.com",
-    process.env.QA_API_BASE_URL || "https://qa.example.com/api",
-    process.env.UAT_BASE_URL || "https://uat.example.com",
-    process.env.UAT_API_BASE_URL || "https://uat.example.com/api",
-  ].map((approvedTarget) => new URL(approvedTarget).origin);
-
   if (!approvedNonLocalOrigins.includes(url.origin)) {
     throw new Error(
       `Non-local test target ${url.origin} must match a configured QA or UAT URL.`,
+    );
+  }
+}
+
+export function assertBrowserTestTargetAllowed(target: string): void {
+  assertTestTargetAllowed(target);
+  if (isLocalTestTarget(target)) return;
+
+  const credentials = {
+    E2E_ADMIN_USER: "admin@example.com",
+    E2E_ADMIN_PASSWORD: "Admin@123",
+    E2E_USER_USER: "user@example.com",
+    E2E_USER_PASSWORD: "User@123",
+    E2E_GUEST_USER: "guest@example.com",
+    E2E_GUEST_PASSWORD: "Guest@123",
+    E2E_API_USER: "api.client@example.com",
+    E2E_API_PASSWORD: "Api@123",
+  };
+  const names = Object.keys(credentials);
+  const demoValues = new Set(Object.values(credentials));
+  const missing = names.filter((name) => !process.env[name]?.trim());
+  const defaults = names.filter((name) => demoValues.has(process.env[name]?.trim() ?? ""));
+  if (missing.length || defaults.length) {
+    throw new Error(
+      `Non-local test targets require environment-specific credentials for every persona. Missing: ${missing.join(", ") || "none"}; local demo defaults present: ${defaults.join(", ") || "none"}.`,
     );
   }
 }
