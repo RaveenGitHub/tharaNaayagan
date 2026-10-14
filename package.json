@@ -21,9 +21,9 @@
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --pretty false",
-    "quality-gate": "npm run lint && npm run typecheck",
+    "quality-gate": "npm run lint && npm run typecheck && npm run traceability:validate",
     "traceability:log": "node scripts/traceability.mjs",
-    "traceability:sync": "node scripts/traceability.mjs \"Test Plan\" \"Update\" \"TP-SYNC\" \"Traceability Sync\" \"Draft\" \"Active\" \"QA Lead\" \"manual-sync\"",
+    "traceability:validate": "node scripts/validate-traceability.mjs",
     "prepare": "node -e \"try { const { execSync } = require('child_process'); execSync('git rev-parse --git-dir', { stdio: 'ignore' }); if (require('fs').existsSync('.githooks')) { execSync('git config core.hooksPath .githooks', { stdio: 'inherit' }); } } catch {}\""
   },
   "devDependencies": {

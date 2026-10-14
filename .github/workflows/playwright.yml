@@ -3,7 +3,7 @@ name: Playwright Automation & Quality Gate
 
 on:
   push:
-    branches: [main, master]
+    branches: [feature/updates, main, master]
   pull_request:
     branches: [main, master]
   workflow_dispatch:

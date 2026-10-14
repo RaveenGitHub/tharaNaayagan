@@ -2,116 +2,77 @@
 
 # Test Plan, Scenario, and Automation Traceability Tracker
 
-This tracker provides end-to-end visibility from the test strategy to the executed automation. It links requirements, test plans, scenarios, execution status, and automation maturity in a single coverage dashboard.
+This tracker is the canonical mapping source for functional and automation-support scenarios. API scenarios are defined in [api-test-plan.md](api-test-plan.md). Historical lifecycle events remain in `.traceability-events.json`; they are audit records, not execution evidence, and do not synchronize requirements, plans, or strategy documents.
+
+Every automated test title must contain exactly one requirement ID and one or more scenario IDs. Run `npm run traceability:validate` to verify test titles against the tracker, test-plan sections, and strategy sections.
 
 ## Status legend
 
-- Execution Status: Not Started | Draft | In Progress | Passed | Failed | Blocked | N/A
+- Execution Status: Not Run | Draft | In Progress | Passed | Failed | Blocked | N/A
 - Automation Status: Not Started | In Progress | Automated | Retired
 - Risk Level: Low | Medium | High | Critical
 - Priority: P1 | P2 | P3 | P4 | P5
 
 ## Coverage summary
 
-| Module / Feature                 | Total Scenarios | Automated | Manual Only | Passed | Failed | Blocked | Automation Coverage |
-| -------------------------------- | --------------: | --------: | ----------: | -----: | -----: | ------: | ------------------: |
-| Authentication                   |               3 |         3 |           0 |      3 |      0 |       0 |                100% |
-| Dashboard / Landing Page         |               2 |         2 |           0 |      2 |      0 |       0 |                100% |
-| User Roles / Access Control      |               2 |         2 |           0 |      2 |      0 |       0 |                100% |
-| Form Validation / Error Handling |               3 |         3 |           0 |      3 |      0 |       0 |                100% |
-| Security / Abuse Prevention      |               3 |         3 |           0 |      3 |      0 |       0 |                100% |
+| Module / Feature                 | Registered Scenarios | Automated Scenarios | Not Implemented / Unverified |
+| -------------------------------- | -------------------: | -----------------: | ---------------------------: |
+| Authentication & sign-in         |                    4 |                  4 |                            0 |
+| Persona display and dashboard    |                    2 |                  2 |                            0 |
+| Input validation                 |                    3 |                  3 |                            0 |
+| Security / input handling        |                    3 |                  2 |                            1 |
+| API plan scenarios (mocked only) |                    8 |                  6 |                            2 |
+| Automation support               |                    2 |                  2 |                            0 |
 
-## Live traceability registry
+The recorded local browser-matrix run on 2026-10-14 passed all 57 tests across Chromium, Firefox, and WebKit. API cases exercise browser-intercepted mocks, not a backend. This is not evidence of live API or production security coverage.
 
-| Entity ID | Object Type | Entity Name | Operation | Owner | Status | Evidence | Last Updated |
-| --------- | ----------- | ---------- | --------- | ----- | ------ | -------- | ------------ |
-| AUT-API-01 | Automation | Playwright API Test Suite | Update | apiCodeGenerator | Automated | tests/apiTests/api.spec.ts | 2026-09-12T09:47:06.693Z |
-| AUT-01 | Automation | Functional Smoke Login Suite | Update | prepareFunctionalTests | Automated | tests/functional/smoke.spec.ts | 2026-09-12T09:47:06.629Z |
-| AUT-01 | Automation | Functional Smoke Login Suite | Update | prepareFunctionalTests | Automated | tests/smoke.spec.ts | 2026-09-12T09:26:42.074Z |
-| SCN-01 | Scenario | Functional Valid Login Scenario | Update | functionalScenarioCreator | Ready for Automation | docs/scenarios.md | 2026-09-12T09:26:41.960Z |
-| AUT-API-01 | Automation | Playwright API Test Suite | Create | API Automation Architect | Automated | tests/api.spec.ts | 2026-09-12T09:11:53.997Z |
-| SCN-API-01 | Scenario | API Login and Contract Validation Scenarios | Create | API Test Architect | Ready for Automation | docs/api-test-plan.md | 2026-09-12T09:11:53.921Z |
-| TP-API-01 | Test Plan | API Contract and Security Test Plan | Create | API Test Architect | Active | docs/api-test-plan.md | 2026-09-12T09:11:47.915Z |
-| TP-SYNC | Test Plan | Traceability Sync | Update | QA Lead | Active | manual-sync | 2026-09-12T07:38:42.120Z |
-| TP-TRACE-001 | Test Plan | Manual traceability sync | Update | QA Lead | In Progress | manual-check | 2026-09-11T21:38:33.034Z |
-| AUT-01 | Automation | Smoke Login Test | Create | Automation Engineer | Automated | tests/smoke.spec.ts | 2026-09-11T20:51:52.187Z |
-| SCN-01 | Scenario | Valid Login Scenario | Create | QA Engineer | Ready for Automation | docs/scenarios.md | 2026-09-11T20:51:52.130Z |
-| TP-01 | Test Plan | Login Test Plan | Create | QA Lead | Active | docs/traceability-tracker.md | 2026-09-11T20:51:52.065Z |
+## Current traceability matrix
 
-## Lifecycle event log
+| Requirement ID | Feature / Module | Test Plan ID | Scenario ID | Scenario Title | Risk Level | Priority | Test Type | Execution Status | Automation Status | Automation Coverage (%) | Defect Count | Owner | Environment | Last Updated | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- | --- |
+| REQ-01 | Authentication | TP-01 | SCN-01 | Valid admin login | High | P1 | Smoke / Functional | Passed | Automated | 100 | 0 | QA Lead | Local mock / Chromium | 2026-10-14 | Verified in Chromium run. |
+| REQ-02 | Authentication | TP-01 | SCN-02 | Invalid credentials show an accessible error | High | P1 | Functional / Negative | Passed | Automated | 100 | 0 | QA Lead | Local mock / Chromium | 2026-10-14 | Verified by smoke test. |
+| REQ-03 | Session management | TP-01 | SCN-03 | Logout clears session and returns to sign-in | Medium | P2 | Functional / Reliability | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Logout covered; session timeout and token revocation are not covered. |
+| REQ-04 | Authentication / entry | TP-02 | SCN-04 | Sign-in page displays required login controls | Medium | P1 | Smoke / Accessibility locator | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Visibility checks only; not a WCAG conformance audit. |
+| REQ-05 | Persona display | TP-03 | SCN-05 | User and Guest login display the matching persona | Medium | P2 | Functional | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Persona display only; authorization enforcement is not validated. |
+| REQ-06 | Form validation | TP-02 | SCN-06 | Empty credentials show client validation | Medium | P2 | Functional / Negative | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Verified in boundary suite. |
+| REQ-07 | Security / input handling | TP-04 | SCN-07 | SQL injection strings are rejected by the demo login | High | P1 | Security / Input handling | Passed | Automated | 100 | 0 | Security QA | Local mock / Chromium | 2026-10-14 | UI demo behavior only; not evidence of backend SQLi resistance. |
+| REQ-08 | Security / abuse prevention | TP-04 | SCN-08 | Repeated failed login / brute-force protection | High | P1 | Security | Not Run | Not Started | 0 | 0 | Security QA | Not defined | 2026-10-14 | No corresponding test or rate-limit contract exists; requires product/API owner confirmation. |
+| REQ-06 | Form validation | TP-02 | SCN-09 | Whitespace-only credentials are rejected | Medium | P2 | Boundary / Negative | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Verified in boundary suite. |
+| REQ-06 | Form validation | TP-02 | SCN-10 | Long username input does not crash the demo login | Low | P3 | Boundary | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | 1024-character fixture; server-side behavior is not covered. |
+| REQ-07 | Security / input handling | TP-04 | SCN-11 | XSS query input is displayed as inert text | High | P1 | Security / Input handling | Passed | Automated | 100 | 0 | Security QA | Local mock / Chromium | 2026-10-14 | Local DOM sanitization behavior only. |
+| REQ-05 | Persona display | TP-03 | SCN-12 | Direct dashboard access defaults to Guest | Medium | P2 | Functional | Passed | Automated | 100 | 0 | QA Engineer | Local mock / Chromium | 2026-10-14 | Default display behavior only; does not prove route authorization. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-01 | Valid admin login response contract | High | P1 | Mocked API-flow / Contract | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | No live API service is called. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-02 | Valid standard user login returns the user role | High | P1 | Mocked API-flow / Contract | Not Run | Not Started | 0 | 0 | API QA | Not defined | 2026-10-14 | Scenario exists in the API plan but is not implemented in the current suite. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-03 | Invalid credentials return 401 | High | P1 | Mocked API-flow / Negative | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | No live API service is called. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-04 | Empty credentials return 400 | Medium | P2 | Mocked API-flow / Negative | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | No live API service is called. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-05 | Extremely long email returns a validation error | Low | P3 | Mocked API-flow / Boundary | Not Run | Not Started | 0 | 0 | API QA | Not defined | 2026-10-14 | Scenario exists in the API plan but is not implemented in the current suite. |
+| REQ-API-01 | API authentication (mocked) | TP-API-01 | SCN-API-06 | SQL injection response does not disclose SQL errors | Critical | P1 | Mocked API-flow / Security | Passed | Automated | 100 | 0 | Security QA | Browser-intercepted mock / Chromium | 2026-10-14 | Mocked response cannot validate backend injection resistance. |
+| REQ-API-02 | API profile (mocked) | TP-API-01 | SCN-API-07 | Missing authorization returns 401 | High | P1 | Mocked API-flow / Security | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | No live API service is called. |
+| REQ-API-02 | API profile (mocked) | TP-API-01 | SCN-API-08 | Authenticated profile returns the caller's profile | High | P1 | Mocked API-flow / Contract | Passed | Automated | 100 | 0 | API QA | Browser-intercepted mock / Chromium | 2026-10-14 | Verified in the same test as SCN-API-07; no live API service is called. |
+| REQ-AUTO-01 | Automation support | TP-AUTO-01 | SCN-AUTO-01 | Authentication helper completes a login | Low | P3 | Automation utility | Passed | Automated | 100 | 0 | Automation Engineer | Local mock / Chromium | 2026-10-14 | Tracks `loginAs` helper behavior. |
+| REQ-AUTO-01 | Automation support | TP-AUTO-01 | SCN-AUTO-02 | API client utility is initialized | Low | P3 | Automation utility | Passed | Automated | 100 | 0 | Automation Engineer | Local mock / Chromium | 2026-10-14 | Availability assertion only; headers and endpoint resolution are not verified. |
 
-| Event ID | Timestamp | Object Type | Operation | Entity ID | Entity Name | Status Before | Status After | Owner | Evidence / File | Notes |
-| -------- | --------- | ---------- | --------- | --------- | ---------- | ------------- | ----------- | ----- | --------------- | ----- |
-| EVT-012 | 2026-09-12T09:47:06.693Z | Automation | Update | AUT-API-01 | Playwright API Test Suite | Automated | Automated | apiCodeGenerator | tests/apiTests/api.spec.ts | Updated for traceability |
-| EVT-011 | 2026-09-12T09:47:06.629Z | Automation | Update | AUT-01 | Functional Smoke Login Suite | Automated | Automated | prepareFunctionalTests | tests/functional/smoke.spec.ts | Updated for traceability |
-| EVT-010 | 2026-09-12T09:26:42.074Z | Automation | Update | AUT-01 | Functional Smoke Login Suite | Not Started | Automated | prepareFunctionalTests | tests/smoke.spec.ts | Updated for traceability |
-| EVT-009 | 2026-09-12T09:26:41.960Z | Scenario | Update | SCN-01 | Functional Valid Login Scenario | Draft | Ready for Automation | functionalScenarioCreator | docs/scenarios.md | Updated for traceability |
-| EVT-008 | 2026-09-12T09:11:53.997Z | Automation | Create | AUT-API-01 | Playwright API Test Suite | Not Started | Automated | API Automation Architect | tests/api.spec.ts | Created for traceability |
-| EVT-007 | 2026-09-12T09:11:53.921Z | Scenario | Create | SCN-API-01 | API Login and Contract Validation Scenarios | Draft | Ready for Automation | API Test Architect | docs/api-test-plan.md | Created for traceability |
-| EVT-006 | 2026-09-12T09:11:47.915Z | Test Plan | Create | TP-API-01 | API Contract and Security Test Plan | Draft | Active | API Test Architect | docs/api-test-plan.md | Created for traceability |
-| EVT-005 | 2026-09-12T07:38:42.120Z | Test Plan | Update | TP-SYNC | Traceability Sync | Draft | Active | QA Lead | manual-sync | Updated for traceability |
-| EVT-004 | 2026-09-11T21:38:33.034Z | Test Plan | Update | TP-TRACE-001 | Manual traceability sync | Draft | In Progress | QA Lead | manual-check | Updated for traceability |
-| EVT-003 | 2026-09-11T20:51:52.187Z | Automation | Create | AUT-01 | Smoke Login Test | Not Started | Automated | Automation Engineer | tests/smoke.spec.ts | Created for traceability |
-| EVT-002 | 2026-09-11T20:51:52.130Z | Scenario | Create | SCN-01 | Valid Login Scenario | Draft | Ready for Automation | QA Engineer | docs/scenarios.md | Created for traceability |
-| EVT-001 | 2026-09-11T20:51:52.065Z | Test Plan | Create | TP-01 | Login Test Plan | Draft | Active | QA Lead | docs/traceability-tracker.md | Created for traceability |
+## Execution snapshot
 
-## Operational rules
+| Scenario ID | Execution Status | Last Executed | Automation Status | Comments |
+| --- | --- | --- | --- | --- |
+| SCN-08 | Not Run | - | Not Started | No implementation or API contract to exercise. |
+| SCN-API-02 | Not Run | - | Not Started | User persona response is not covered by an automated scenario. |
+| SCN-API-05 | Not Run | - | Not Started | Long-email boundary scenario is not covered by an automated test. |
+All scenarios other than SCN-08 in the detailed matrix passed in the recorded 57-test browser-matrix run. The results are local demo/mock coverage, not live-service validation.
 
-- Every create action for a test plan, scenario, or automation artifact must append a row to the lifecycle event log.
-- Every update must record the previous and new status values.
-- Every delete must record the reason, retirement status, and the replacement or archive reference.
-- Automation completion must be logged when a generated spec or page object becomes active in execution.
-- The tracker is the source of truth for reporting, accountability, and release readiness.
-- Every status change is reflected in the live traceability registry and in the lifecycle event log.
+## Operating rules and next-step guardrails
 
-## Detailed traceability matrix
+- The detailed matrix above is authoritative for functional and automation-support scenarios; the scenario table in `api-test-plan.md` is authoritative for API cases.
+- Registry and lifecycle records are historical audit records, not current execution status.
+- The validator checks statically named Playwright tests against their authoritative mapping; it does not invent requirements or synchronize documents.
+- When a requirement or API contract changes, update its approved source, assess impacted scenarios and linked test artifacts, then update the strategy and plan and rerun validation. Obtain owner confirmation before material scope or contract changes.
+- Record each run with its browser/environment and evidence; do not carry status forward to unexecuted browser projects or live services.
+- Retirements and status changes should retain the reason and replacement/archive reference in `.traceability-events.json`.
 
-| Requirement ID | Feature / Module                 | Test Plan ID | Scenario ID | Scenario Title                               | Risk Level | Priority | Test Type                   | Execution Status | Automation Status | Automation Coverage (%) | Defect Count | Owner       | Environment | Last Updated | Notes                                         |
-| -------------- | -------------------------------- | ------------ | ----------- | -------------------------------------------- | ---------- | -------- | --------------------------- | ---------------- | ----------------- | ----------------------: | -----------: | ----------- | ----------- | ------------ | --------------------------------------------- |
-| REQ-01         | Authentication                   | TP-01        | SCN-01      | User login with valid credentials            | High       | P1       | Smoke / Functional          | Passed           | Automated         |                     100 |            0 | QA Lead     | DEV / QA    | 2026-09-12   | Verified across Chromium, Firefox, WebKit     |
-| REQ-02         | Authentication                   | TP-01        | SCN-02      | User login with invalid credentials          | High       | P1       | Functional / Negative       | Passed           | Automated         |                     100 |            0 | QA Lead     | DEV / QA    | 2026-09-12   | Error alert displayed & verified              |
-| REQ-03         | Authentication                   | TP-01        | SCN-03      | Session timeout or logout behavior           | Medium     | P2       | Functional / Reliability    | Passed           | Automated         |                     100 |            0 | QA Engineer | QA / UAT    | 2026-09-12   | Verified session state reset on logout        |
-| REQ-04         | Dashboard / Landing Page         | TP-02        | SCN-04      | Landing page loads after successful login    | Medium     | P1       | Smoke / Functional          | Passed           | Automated         |                     100 |            0 | QA Engineer | DEV / QA    | 2026-09-12   | Verified dashboard heading & persona context  |
-| REQ-05         | User Roles / Access Control      | TP-03        | SCN-05      | Admin-only route or action                   | High       | P1       | Security / Functional       | Passed           | Automated         |                     100 |            0 | Security QA | QA / UAT    | 2026-09-12   | Role-based access validated for Admin/User    |
-| REQ-06         | Form Validation / Error Handling | TP-02        | SCN-06      | Empty input validation on login form         | Medium     | P2       | Functional / Negative       | Passed           | Automated         |                     100 |            0 | QA Engineer | DEV / QA    | 2026-09-12   | Verified client field-level error messages    |
-| REQ-07         | Security / Abuse Prevention      | TP-04        | SCN-07      | Attempted malicious input in credentials     | High       | P1       | Security / Input Validation | Passed           | Automated         |                     100 |            0 | Security QA | QA          | 2026-09-12   | SQLi & XSS payloads safely sanitized          |
-| REQ-08         | Security / Abuse Prevention      | TP-04        | SCN-08      | Brute force / repeated failed login attempts | High       | P1       | Security / Performance      | Passed           | Automated         |                     100 |            0 | Security QA | QA          | 2026-09-12   | Boundary strings & edge inputs handled safely |
+## Remaining governance gaps
 
-## Scenario execution snapshot
-
-| Scenario ID | Scenario Title                               | Owner       | Execution Status | Last Executed | Automation Status | Pass / Fail | Comments                                      |
-| ----------- | -------------------------------------------- | ----------- | ---------------- | ------------- | ----------------- | ----------- | --------------------------------------------- |
-| SCN-01      | User login with valid credentials            | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
-| SCN-02      | User login with invalid credentials          | QA Lead     | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
-| SCN-03      | Session timeout or logout behavior           | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/auth.spec.ts     |
-| SCN-04      | Landing page loads after successful login    | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/smoke.spec.ts    |
-| SCN-05      | Admin-only route or action                   | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/auth.spec.ts     |
-| SCN-06      | Empty input validation on login form         | QA Engineer | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/boundary.spec.ts |
-| SCN-07      | Attempted malicious input in credentials     | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/security.spec.ts |
-| SCN-08      | Brute force / repeated failed login attempts | Security QA | Passed           | 2026-09-12    | Automated         | Pass        | Verified in tests/functional/boundary.spec.ts |
-
-## Automation readiness checklist
-
-- [x] Requirement-to-scenario mapping is complete
-- [x] Scenario IDs are unique and stable
-- [x] Priority and risk levels are assigned
-- [x] Page objects exist for all UI flows
-- [x] Locators are centralized and maintainable
-- [x] Test data is defined for positive and negative cases
-- [x] Environment dependency is documented
-- [x] Execution results are recorded after each run
-- [x] Automation status is updated to reflect real implementation maturity
-- [x] Defects are linked to relevant scenarios and requirements
-
-## Usage guidance
-
-Use this file as the single source of truth for traceability across the test lifecycle. Update it whenever:
-
-- a requirement changes
-- a new scenario is added or removed
-- automation is created or updated
-- a test run is executed
-- a defect is logged or resolved
-- a release enters a different environment
-
-This file should be reviewed during daily QA triage, release readiness checkpoints, and automation planning sessions.
+- Requirement IDs in this tracker are the selected baseline, but product/requirement owner approval is still needed.
+- `SCN-08` brute-force protection remains unimplemented and unverified.
+- The current suite establishes local demo behavior and mocked API-flow behavior only.

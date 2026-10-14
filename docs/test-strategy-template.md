@@ -61,6 +61,13 @@ The test platform governs client-side presentation, authentication sessions, rol
 - CI runner environments have internet access to fetch browser binaries and npm dependencies.
 - Test accounts and environment variables are provisioned safely via repository secrets.
 
+### 3.4 Implemented Evidence Boundary
+
+- The repository's executable UI suite currently validates the local static demo in `public/`; these checks do not prove behavior of a production service.
+- The API-named suite intercepts requests in the browser and returns mock responses. It is mock-flow coverage, not live API contract or backend security validation.
+- Brute-force protection, authenticated profile contract behavior, authorization enforcement, session timeout, WCAG conformance, performance SLAs, and database behavior are not established by the current automated suite.
+- Treat the broader quality goals elsewhere in this strategy as targets or assumptions until acceptance criteria, a service contract, and corresponding evidence are approved.
+
 ---
 
 ## 4. Risk Analysis & Mitigation Matrix
@@ -90,6 +97,12 @@ The test platform governs client-side presentation, authentication sessions, rol
 - **Security Testing (SEC-T)**: Automated payload injection testing and security header compliance.
 - **Accessibility Testing (ACC-T)**: Semantic element validation, ARIA landmarks, and screen-reader accessibility.
 - **Performance & Reliability (PT/REL-T)**: Navigation response timing within 1.5s SLA and zero memory leakage during repeated runs.
+
+### 5.3 API and Mock Validation
+
+- API flow tests may use controlled browser-intercepted responses when no backend contract or environment has been approved.
+- Mocked status and payload assertions do not establish live API availability, server-side contract conformance, authentication enforcement, or security resistance.
+- Map each approved API scenario to its API test plan section and retain its mock/live target designation in execution evidence.
 
 ---
 
@@ -139,7 +152,7 @@ The test platform governs client-side presentation, authentication sessions, rol
 ## 9. Reporting and Governance
 
 - **Automated CI Reporting**: Allure report generated and published as build artifacts per matrix project.
-- **Traceability Ledger**: Live traceability registry in `docs/traceability-tracker.md` automatically updated via `scripts/traceability.mjs`.
+- **Traceability Ledger**: Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API scenarios are maintained in `docs/api-test-plan.md`. `scripts/validate-traceability.mjs` validates links in the quality gate, while `scripts/traceability.mjs` records lifecycle events only.
 - **Quality Gates**: GitHub Actions status checks enforce mandatory pass status before merge approval into `main`.
 
 | Requirement ID | Requirement | Test Type | Test Case | Status |

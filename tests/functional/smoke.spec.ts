@@ -5,7 +5,7 @@ import { personas, loginScenarios } from "../../fixtures/test-data";
 import { loginAs } from "../../utils/auth";
 
 test.describe("Smoke Suite - Critical Path Validation", () => {
-  test("landing page loads and login form is accessible", async ({ page }) => {
+  test("REQ-04 SCN-04: Sign-in page loads with accessible login controls", async ({ page }) => {
     const loginPage = new LoginPage(page);
     await loginPage.gotoLogin();
     await expect(page).toHaveURL(/\/login\.html/);
@@ -14,7 +14,7 @@ test.describe("Smoke Suite - Critical Path Validation", () => {
     await expect(loginPage.loginButton).toBeVisible();
   });
 
-  test("admin login succeeds with valid credentials", async ({ page }) => {
+  test("REQ-01 SCN-01: Admin login succeeds with valid credentials", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const dashboardPage = new DashboardPage(page);
     await loginPage.gotoLogin();
@@ -24,7 +24,7 @@ test.describe("Smoke Suite - Critical Path Validation", () => {
     await expect(dashboardPage.userDisplay).toHaveText(/admin/i);
   });
 
-  test("invalid login displays accessible error alert", async ({ page }) => {
+  test("REQ-02 SCN-02: Invalid login displays accessible error alert", async ({ page }) => {
     const loginPage = new LoginPage(page);
     const invalidUser = loginScenarios.find(
       (scenario) => scenario.name === "invalid-password",
@@ -40,7 +40,7 @@ test.describe("Smoke Suite - Critical Path Validation", () => {
     await expect(loginPage.errorMessage).toContainText(/invalid/i);
   });
 
-  test("helper authentication utility performs direct session login", async ({
+  test("REQ-AUTO-01 SCN-AUTO-01: Authentication helper performs direct session login", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page);

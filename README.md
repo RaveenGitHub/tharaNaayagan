@@ -86,10 +86,12 @@ By the end of this guide, you should be able to:
 .
 ├── .github/
 │   ├── agents/
-│   └── prompts/
-├── ci/
-│   └── github-actions.yml
+│   ├── prompts/
+│   └── workflows/
+│       └── playwright.yml
 ├── docs/
+│   ├── api-test-plan.md
+│   ├── functional-test-plan.md
 │   ├── traceability-tracker.md
 │   └── test-strategy-template.md
 ├── fixtures/
@@ -104,7 +106,8 @@ By the end of this guide, you should be able to:
 │   ├── index.html
 │   └── login.html
 ├── scripts/
-│   └── traceability.mjs
+│   ├── traceability.mjs
+│   └── validate-traceability.mjs
 ├── tests/
 │   ├── functional/
 │   │   ├── smoke.spec.ts
@@ -203,8 +206,11 @@ Use the main scripts from `package.json`:
 
 ```bash
 npm run quality-gate
+npm run traceability:validate
 npx playwright test --project=chromium --reporter=line
 ```
+
+The quality gate validates that each named test has a requirement ID and one or more scenario IDs, and that each mapping resolves to its functional/API plan and referenced strategy section. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API.
 
 Common commands:
 
@@ -434,8 +440,10 @@ npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter
 
 - [UserGuide.md](UserGuide.md) — user onboarding guide
 - [docs/test-strategy-template.md](docs/test-strategy-template.md) — reusable strategy template
-- [docs/traceability-tracker.md](docs/traceability-tracker.md) — coverage and lifecycle tracking
+- [docs/functional-test-plan.md](docs/functional-test-plan.md) — scoped functional scenarios and automation targets
+- [docs/api-test-plan.md](docs/api-test-plan.md) — API scenarios and mock/live evidence boundary
+- [docs/traceability-tracker.md](docs/traceability-tracker.md) — canonical scenario mapping and execution status
 
 ## CI/CD
 
-The repository includes pipeline examples in `ci/` for GitHub Actions and other enterprise automation runners.
+GitHub Actions runs from `.github/workflows/playwright.yml`. The quality job runs lint, type checking, and traceability validation before the browser matrix.

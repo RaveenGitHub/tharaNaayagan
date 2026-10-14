@@ -58,6 +58,10 @@ This document defines the comprehensive API Test Plan for the platform's backend
 
 ## 4. API Scenario Test Matrix
 
+**Test Plan ID:** `TP-API-01`.
+
+**Test Strategy alignment:** Sections 3.1 and 5.3 of `test-strategy-template.md`.
+
 | Scenario ID    | Endpoint                   | Category              | Description                                                               | Persona   | Risk     | Priority |
 | :------------- | :------------------------- | :-------------------- | :------------------------------------------------------------------------ | :-------- | :------- | :------- |
 | **SCN-API-01** | `POST /api/v1/auth/login`  | Positive / Contract   | Valid admin credentials return 200 OK with valid JWT token                | Admin     | High     | P1       |
@@ -87,4 +91,8 @@ This document defines the comprehensive API Test Plan for the platform's backend
 
 ## 6. Traceability & Execution Governance
 
-All API scenarios designed in this plan are tracked in [docs/traceability-tracker.md](docs/traceability-tracker.md) and automated via Playwright's `APIRequestContext` inside [tests/apiTests/api.spec.ts](tests/apiTests/api.spec.ts).
+API scenarios are defined in this plan and mapped to the tracker for current execution status. The present implementation in [tests/apiTests/api.spec.ts](tests/apiTests/api.spec.ts) uses browser-intercepted mock responses; it does not use Playwright's `APIRequestContext`.
+
+## 7. Current Automation Evidence Boundary
+
+The current API-named tests use `page.route()` and browser `fetch()` against intercepted responses. They do not call a service through `APIRequestContext`, and passing results establish only the defined browser/mock flow. The authenticated profile scenario (`SCN-API-08`) is asserted alongside `SCN-API-07` in the current mocked profile test. Before adding real service tests, obtain the approved OpenAPI/contract source, environment endpoint, authentication method, and safe test-data policy from the API owner.

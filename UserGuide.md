@@ -20,6 +20,7 @@ Use the README as the main source of truth for:
 npm install
 npx playwright install --with-deps
 npm run quality-gate
+npm run traceability:validate
 npm run test:smoke
 # or: npx playwright test tests/functional/smoke.spec.ts --project=chromium --reporter=line
 ```
@@ -28,6 +29,8 @@ npm run test:smoke
 
 - [README.md](README.md) — primary project guide
 - [docs/traceability-tracker.md](docs/traceability-tracker.md) — traceability and status tracking
+- [docs/functional-test-plan.md](docs/functional-test-plan.md) — functional scenarios and automation targets
+- [docs/api-test-plan.md](docs/api-test-plan.md) — API contracts, scenarios, and mock coverage limits
 - [docs/test-strategy-template.md](docs/test-strategy-template.md) — reusable test strategy template
 - [docs/api-test-plan.md](docs/api-test-plan.md) — enterprise API test plan and contract specifications
 

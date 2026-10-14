@@ -8,6 +8,8 @@ tools: [read, search, edit, execute]
 
 Use this prompt to convert an API Test Plan into complete, production-ready Playwright API test automation code and utilities.
 
+The current API suite uses browser-intercepted mock responses, not a live service. Keep work mock-scoped unless the API owner supplies an approved OpenAPI contract, endpoint, authentication policy, environment, and safe test-data rules. Ask before changing this target, and do not describe mock results as backend validation.
+
 ## Goal
 
 Transform designed API scenarios marked "Ready for Automation" into executable Playwright TypeScript API tests covering:
@@ -22,6 +24,7 @@ Transform designed API scenarios marked "Ready for Automation" into executable P
 - Playwright API test specs located under `tests/apiTests/` (e.g., `tests/apiTests/api.spec.ts`)
 - Full test metadata annotations (`Requirement ID`, `Scenario ID`, `Severity S1–S5`, `Priority P1–P5`, `Traceability Score`)
 - Quality gate validation (`npm run quality-gate`) and test execution (`npm test` / `npm run test:api` / `npm run test:apiTests`)
+- Traceability validation (`npm run traceability:validate`) with every test mapped through the API plan to its strategy section
 
 ## Inputs to Analyze
 

@@ -3,8 +3,8 @@ import { LoginPage } from "../../pages/login.page";
 import { DashboardPage } from "../../pages/dashboard.page";
 import { personas } from "../../fixtures/test-data";
 
-test.describe("Authentication & Role-Based Access Suite", () => {
-  test("standard user login displays user role on dashboard", async ({
+test.describe("Authentication & Persona Display Suite", () => {
+  test("REQ-05 SCN-05: Standard user login displays the correct persona", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -18,7 +18,7 @@ test.describe("Authentication & Role-Based Access Suite", () => {
     await expect(dashboardPage.userDisplay).toHaveText("User");
   });
 
-  test("guest user login succeeds with guest role privileges", async ({
+  test("REQ-05 SCN-05: Guest login displays the correct persona", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -32,7 +32,7 @@ test.describe("Authentication & Role-Based Access Suite", () => {
     await expect(dashboardPage.userDisplay).toHaveText("Guest");
   });
 
-  test("logout clears user session and redirects back to login page", async ({
+  test("REQ-03 SCN-03: Logout clears the session and returns to sign-in", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
