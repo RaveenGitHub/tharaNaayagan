@@ -64,7 +64,7 @@ The API scenarios SCN-API-02 and SCN-API-05 are now covered by browser-intercept
 
 - The detailed matrix above is authoritative for functional and automation-support scenarios; the scenario table in `api-test-plan.md` is authoritative for API cases.
 - Registry and lifecycle records are historical audit records, not current execution status.
-- The validator checks statically named Playwright tests against their authoritative mapping; it does not invent requirements or synchronize documents.
+- The validator parses static Playwright declarations, checks mappings in both directions, and requires every Automated scenario to have runnable coverage. Skipped/fixme-only scenarios and missing/mismatched functional-plan test targets fail. Dynamic declarations and conditional skip/fixme calls fail explicitly rather than being silently ignored. This static gate does not prove execution, invent requirements, or synchronize documents.
 - When a requirement or API contract changes, update its approved source, assess impacted scenarios and linked test artifacts, then update the strategy and plan and rerun validation. Obtain owner confirmation before material scope or contract changes.
 - Record each run with its browser/environment and evidence; do not carry status forward to unexecuted browser projects or live services.
 - Retirements and status changes should retain the reason and replacement/archive reference in `.traceability-events.json`.

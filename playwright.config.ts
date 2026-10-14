@@ -89,7 +89,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npx http-server -p 4173 ./public",
+    command: "npm run serve:demo",
     url: "http://127.0.0.1:4173",
     reuseExistingServer: !process.env.CI,
     timeout: 30_000,

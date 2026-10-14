@@ -16,8 +16,10 @@ Use the README as the main source of truth for:
 
 ## Start here
 
+Use Node.js 22.x (the runtime recorded in `.nvmrc` and used by CI).
+
 ```bash
-npm install
+npm ci
 npx playwright install --with-deps
 npm run quality-gate
 npm run traceability:validate

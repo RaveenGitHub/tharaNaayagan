@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import ts from "typescript";
 
 const root = process.cwd();
 const trackerPath = path.join(root, "docs", "traceability-tracker.md");
@@ -69,13 +70,55 @@ function walk(directory) {
 
 function testCasesIn(filePath) {
   const source = fs.readFileSync(filePath, "utf8");
+  const syntax = ts.createSourceFile(filePath, source, ts.ScriptTarget.Latest, true);
   const cases = [];
-  const testCall = /\btest\s*\(\s*(["'])(.*?)\1/gs;
-  let match;
-
-  while ((match = testCall.exec(source)) !== null) {
-    cases.push({ title: match[2], filePath });
+  const testNames = new Set(["test"]);
+  for (const statement of syntax.statements) {
+    if (!ts.isImportDeclaration(statement)) continue;
+    const bindings = statement.importClause?.namedBindings;
+    if (!bindings || !ts.isNamedImports(bindings)) continue;
+    for (const binding of bindings.elements) {
+      if ((binding.propertyName || binding.name).text === "test") testNames.add(binding.name.text);
+    }
   }
+  function visit(node, disabled = false) {
+    if (ts.isCallExpression(node)) {
+      let expression = node.expression;
+      const modifiers = [];
+      while (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
+        const name = ts.isPropertyAccessExpression(expression) ? expression.name : expression.argumentExpression;
+        if (!name || (ts.isElementAccessExpression(expression) && !ts.isStringLiteral(name))) {
+          modifiers.unshift("<dynamic>");
+        } else {
+          modifiers.unshift(name.text);
+        }
+        expression = expression.expression;
+      }
+      if (ts.isIdentifier(expression) && testNames.has(expression.text)) {
+        if (modifiers.includes("<dynamic>")) {
+          errors.push(`${path.relative(root, filePath)}: computed test modifiers are not supported.`);
+        }
+        const blocked = disabled || modifiers.some((name) => ["skip", "fixme"].includes(name));
+        if (modifiers[0] === "describe") {
+          ts.forEachChild(node, (child) => visit(child, blocked));
+          return;
+        }
+        if (modifiers.length === 0 || ["only", "skip", "fixme", "fail"].includes(modifiers[0])) {
+          const title = node.arguments[0];
+          if (title && (ts.isStringLiteral(title) || ts.isNoSubstitutionTemplateLiteral(title))) {
+            const callback = node.arguments.find((argument) =>
+              ts.isArrowFunction(argument) || ts.isFunctionExpression(argument),
+            );
+            cases.push({ title: title.text, filePath, runnable: !blocked && !!callback });
+          } else {
+            errors.push(`${path.relative(root, filePath)}: test titles and skip/fixme conditions must be statically reviewable; dynamic declarations are not supported.`);
+          }
+        }
+      }
+    }
+    ts.forEachChild(node, (child) => visit(child, disabled));
+  }
+  visit(syntax);
   return cases;
 }
 
@@ -119,6 +162,7 @@ const apiScenarioRows = tableRowsAfter(apiPlan, "## 4. API Scenario Test Matrix"
 
 const trackerMappings = new Map();
 const trackerPlanIds = new Map();
+const trackerStatuses = new Map();
 for (const row of trackerRows) {
   const [requirementId, , planId, scenarioId] = row;
   if (!/^REQ-[A-Z0-9-]+$/.test(requirementId) || !/^SCN-[A-Z0-9-]+$/.test(scenarioId)) {
@@ -129,6 +173,8 @@ for (const row of trackerRows) {
   }
   trackerMappings.set(scenarioId, requirementId);
   trackerPlanIds.set(scenarioId, planId);
+  if (!row[1]) throw new Error(`${scenarioId}: module/area is missing.`);
+  trackerStatuses.set(scenarioId, row[9]);
 }
 
 const errors = [];
@@ -138,6 +184,9 @@ let currentFunctionalPlanLines = [];
 function saveFunctionalPlanSection() {
   if (!currentFunctionalPlanId) return;
   const content = currentFunctionalPlanLines.join("\n");
+  if (functionalPlanSections.has(currentFunctionalPlanId)) {
+    errors.push(`Duplicate functional test plan section: ${currentFunctionalPlanId}.`);
+  }
   functionalPlanSections.set(currentFunctionalPlanId, content);
   validateStrategyReferences(currentFunctionalPlanId, content, strategy, errors);
 }
@@ -157,6 +206,26 @@ for (const line of functionalPlan.split(/\r?\n/)) {
   }
 }
 saveFunctionalPlanSection();
+
+const automationTargets = new Map();
+for (const [planId, section] of functionalPlanSections) {
+  for (const line of section.split(/\r?\n/)) {
+    const cells = line.split("|").slice(1, -1).map((cell) => cell.trim().replace(/`/g, ""));
+    if (!cells[1]?.startsWith("SCN-")) continue;
+    const [requirementId, scenarioId, , , target] = cells;
+    if (trackerMappings.get(scenarioId) !== requirementId || trackerPlanIds.get(scenarioId) !== planId) {
+      errors.push(`${scenarioId}: functional plan mapping does not match the tracker.`);
+    }
+    if (automationTargets.has(scenarioId)) errors.push(`Duplicate functional plan scenario: ${scenarioId}.`);
+    if (target?.endsWith(".spec.ts")) {
+      const targetPath = path.resolve(root, target);
+      if (!target.startsWith("tests/") || !fs.existsSync(targetPath)) {
+        errors.push(`${scenarioId}: automation target does not exist under tests/: ${target}.`);
+      }
+      automationTargets.set(scenarioId, targetPath);
+    }
+  }
+}
 
 for (const [scenarioId, requirementId] of trackerMappings) {
   if (scenarioId.startsWith("SCN-API-")) continue;
@@ -191,7 +260,14 @@ for (const row of apiScenarioRows) {
   if (!scenarioId || !requirementId) {
     throw new Error(`Cannot resolve API scenario to a requirement: ${row.join(" | ")}`);
   }
+  if (apiMappings.has(scenarioId)) errors.push(`Duplicate API plan scenario: ${scenarioId}.`);
   apiMappings.set(scenarioId, requirementId);
+}
+
+for (const scenarioId of trackerMappings.keys()) {
+  if (scenarioId.startsWith("SCN-API-") && !apiMappings.has(scenarioId)) {
+    errors.push(`${scenarioId}: tracker scenario is missing from the API plan.`);
+  }
 }
 
 for (const [scenarioId, requirementId] of apiMappings) {
@@ -210,7 +286,8 @@ else validateStrategyReferences("TP-API-01 / API plan section 4", apiPlanSection
 const allTests = walk(testsPath).flatMap(testCasesIn);
 if (allTests.length === 0) errors.push("No Playwright tests were found under tests/.");
 
-for (const { title, filePath } of allTests) {
+const coveredScenarios = new Set();
+for (const { title, filePath, runnable } of allTests) {
   const relativePath = path.relative(root, filePath).replace(/\\/g, "/");
   const requirementIds = [...title.matchAll(/\bREQ-[A-Z0-9-]+\b/g)].map(([id]) => id);
   const scenarioIds = [...title.matchAll(/\bSCN-[A-Z0-9-]+\b/g)].map(([id]) => id);
@@ -233,6 +310,28 @@ for (const { title, filePath } of allTests) {
     } else if (expectedRequirement !== requirementId) {
       errors.push(`${relativePath}: ${scenarioId} maps to ${expectedRequirement}, not ${requirementId}.`);
     }
+    if (runnable && expectedRequirement === requirementId) {
+      coveredScenarios.add(scenarioId);
+      if (trackerStatuses.get(scenarioId) !== "Automated") {
+        errors.push(`${scenarioId}: runnable test conflicts with tracker automation status ${trackerStatuses.get(scenarioId)}.`);
+      }
+      const target = automationTargets.get(scenarioId);
+      if (target && target !== filePath) {
+        errors.push(`${scenarioId}: ${relativePath} does not match its functional plan automation target.`);
+      }
+    }
+  }
+}
+
+for (const [scenarioId, status] of trackerStatuses) {
+  if (!["Not Started", "In Progress", "Automated", "Retired"].includes(status)) {
+    errors.push(`${scenarioId}: invalid automation status ${status}.`);
+  }
+  if (status === "Automated" && !coveredScenarios.has(scenarioId)) {
+    errors.push(`${scenarioId}: Automated scenario has no runnable test.`);
+  }
+  if (status === "Automated" && !scenarioId.startsWith("SCN-API-") && !automationTargets.has(scenarioId)) {
+    errors.push(`${scenarioId}: Automated scenario has no functional plan automation target.`);
   }
 }
 
@@ -242,6 +341,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Traceability validation passed: ${allTests.length} tests map to ${trackerMappings.size} unique scenarios; ${apiMappings.size} are defined in the API plan.`,
+    `Traceability validation passed: ${allTests.length} test declarations cover ${coveredScenarios.size} runnable scenarios of ${trackerMappings.size} registered; ${apiMappings.size} are defined in the API plan.`,
   );
 }

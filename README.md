@@ -38,7 +38,7 @@ By the end of this guide, you should be able to:
 | Requirement      | Recommended                  |
 | ---------------- | ---------------------------- |
 | Operating System | Windows 10+, macOS, or Linux |
-| Node.js          | 18 or newer                  |
+| Node.js          | 22.x (matches CI)            |
 | Package Manager  | npm                          |
 | Browser Support  | Chromium, Firefox, WebKit    |
 | Memory           | 8 GB RAM or more             |
@@ -65,7 +65,7 @@ By the end of this guide, you should be able to:
 2. Install dependencies:
 
    ```bash
-   npm install
+   npm ci
    ```
 
 3. Install Playwright browsers:
@@ -108,7 +108,8 @@ By the end of this guide, you should be able to:
 ├── scripts/
 │   ├── analyze-impact.mjs
 │   ├── traceability.mjs
-│   └── validate-traceability.mjs
+│   ├── validate-traceability.mjs
+│   └── validate-traceability.test.mjs
 ├── tests/
 │   ├── functional/
 │   │   ├── smoke.spec.ts
@@ -174,8 +175,8 @@ graph TD
 ### Close
 
 - [ ] Open the repo in a terminal
-- [ ] Confirm Node.js and npm are installed
-- [ ] Run `npm install`
+- [ ] Confirm Node.js 22.x and npm are installed
+- [ ] Run `npm ci`
 - [ ] Run `npx playwright install --with-deps`
 - [ ] Confirm the workspace is ready for execution
 
@@ -183,7 +184,7 @@ Example:
 
 ```bash
 cd <repository-folder>
-npm install
+npm ci
 npx playwright install --with-deps
 ```
 
@@ -211,7 +212,11 @@ npm run traceability:validate
 npx playwright test --project=chromium --reporter=line
 ```
 
-The quality gate runs lint, TypeScript, traceability validation, and `npm audit --audit-level=high`. Traceability checks require each named test to have a requirement ID and one or more scenario IDs, with mappings resolving to their functional/API plan and referenced strategy section. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API.
+The supported runtime is Node.js 22.x, recorded in `package.json` and `.nvmrc`; CI uses the same major version. Use `npm ci` to restore the committed lockfile. The static server and Allure CLI are declared development dependencies rather than downloaded implicitly during execution.
+
+The quality gate runs lint, TypeScript, framework regression tests, traceability validation, and `npm audit --audit-level=high`. Traceability checks require each named test to have a requirement ID and one or more scenario IDs, with mappings resolving to their functional/API plan and referenced strategy section. Automated scenarios must have runnable declarations; skipped/fixme-only coverage, missing or mismatched functional plan test targets, and conflicting automation statuses fail. Static string and template-literal titles are supported; dynamic titles and conditional skip/fixme calls require an explicit review and are rejected by the static gate. Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API mappings are maintained in `docs/api-test-plan.md`. API suite results currently cover browser-intercepted mocks, not a live API. Static validation is not execution evidence.
+
+Run `npm run test:framework` for focused governance regression tests. Run `npm run report:generate` to generate an Allure report or `npm run report` to generate and open it. Allure report generation additionally requires Java installed and available on PATH (or through `JAVA_HOME`); the CLI dependency does not install Java. CI currently archives raw Allure results, not rendered Allure reports.
 
 Before changing a requirement or scenario, run the focused impact scan to locate related plans, tests, POMs, fixtures, utilities, and configuration:
 
@@ -330,11 +335,9 @@ Expected output:
 
 ## Troubleshooting
 
-### npm install fails
+### Dependency installation fails
 
-```bash
-npm install --legacy-peer-deps
-```
+Confirm Node.js 22.x is active, then rerun `npm ci` and inspect the reported error. Do not bypass peer-dependency checks or regenerate the lockfile as an installation workaround; dependency changes require a reviewed manifest/lockfile update.
 
 ### Playwright browsers missing
 

@@ -77,7 +77,7 @@ The current executable scope is the repository's local static sign-in/dashboard 
 | :--- | :--- | :---: | :---: | :--- |
 | Accidental use of demo credentials against a shared target | High | Medium | P1 | Browser and API-client targets default to loopback; non-local targets require explicit opt-in and must match configured QA/UAT origins. Production origins are blocked, and non-local browser runs require dedicated persona credentials. Demo values remain intentionally public for local mock login only. |
 | Server authentication, authorization, and session security | Critical | Unknown | P1 | Not validated: current UI is static and API responses are intercepted mocks. Requires approved service contract and isolated test environment before service-level tests. |
-| Cross-browser UI behavior | Medium | Low | P2 | Local browser matrix passed 57 tests across Chromium, Firefox, and WebKit on 2026-10-14; rerun per change/CI for fresh evidence. |
+| Cross-browser UI behavior | Medium | Low | P2 | Local browser matrix passed 63 executions (21 named tests) across Chromium, Firefox, and WebKit on 2026-10-14; rerun per change/CI for fresh evidence. |
 | API contract / integration drift | High | Unknown | P1 | Mock-only assertions can drift from a real service. No OpenAPI source or approved endpoint is provided; do not treat mocks as integration coverage. |
 | Test data misconfiguration | Medium | Medium | P2 | `.env.example` identifies demo values as local-only; non-local browser targets require explicit opt-in and environment-specific persona credentials. |
 | Performance-lite behavior | Unknown | Unknown | P3 | No response-time, throughput, or memory measurements exist. Define an owner-approved measure before adding performance checks. |
@@ -92,8 +92,9 @@ The current executable scope is the repository's local static sign-in/dashboard 
 
 - **System/UI demo validation**: Local sign-in, persona display, logout, and input-handling checks through the browser.
 - **Mock-flow validation**: Selected login/profile response shapes and status handling against browser-intercepted responses.
-- **Smoke/Regression**: Current 19 named Playwright tests are run in each configured browser; these are not UAT or production-system evidence.
-- Unit/component, database, true integration, UAT, and server-side business-rule coverage are not currently configured.
+- **Smoke/Regression**: Current 21 named Playwright tests are run in each configured browser; these are not UAT or production-system evidence.
+- **Framework regression**: Node.js tests exercise traceability validation failure modes independently of browser/product scenarios.
+- Product unit/component, database, true integration, UAT, and server-side business-rule coverage are not currently configured.
 
 ### 5.2 Non-Functional Testing
 
@@ -157,9 +158,9 @@ The current executable scope is the repository's local static sign-in/dashboard 
 
 ## 9. Reporting and Governance
 
-- **Automated CI Reporting**: Allure report generated and published as build artifacts per matrix project.
+- **Automated CI Reporting**: Raw Allure results are uploaded as artifacts per browser project. Rendered reports can be generated locally using the locked Allure CLI and a separately installed Java runtime; CI does not currently generate rendered Allure reports.
 - **Traceability Ledger**: Functional mappings are maintained in `docs/traceability-tracker.md` and `docs/functional-test-plan.md`; API scenarios are maintained in `docs/api-test-plan.md`. `scripts/validate-traceability.mjs` validates links in the quality gate, while `scripts/traceability.mjs` records lifecycle events only.
-- **Quality Gates**: GitHub Actions status checks enforce mandatory pass status before merge approval into `main`.
+- **Quality Gates**: GitHub Actions runs the quality gate and browser matrix on supported branch/PR events. Required merge checks must be configured separately through repository protection/rulesets; enforcement is not established by workflow YAML alone.
 
 | Requirement ID | Requirement | Test Type | Test Case | Status |
 | -------------- | ----------- | --------- | --------- | ------ |

@@ -21,13 +21,13 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
 
 ---
 
-## 3. Discovered Endpoint Catalog
+## 3. Mock Endpoint Catalog
 
 ### Endpoint 1: Authentication & Token Issuance
 
 - **Requirement ID**: `REQ-API-01`
 - **Method & Path**: `POST /api/v1/auth/login`
-- **Description**: Authenticates user credentials and returns a scoped session token with persona claims.
+- **Description**: Defines intercepted login responses for local mock-flow checks; no backend authentication or token-claim validation occurs.
 - **Headers**:
   - `Content-Type: application/json`
   - `Accept: application/json`
@@ -39,10 +39,10 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
   }
   ```
 - **Response Contracts**:
-  - `200 OK`: Returns JWT token, user persona (`Admin`, `User`, `Guest`), and expiration timestamp.
+  - `200 OK`: Mock admin/user responses contain an opaque mock token string, `user`, `role`, and `expiresIn: 3600` seconds. The token is not a validated JWT and no expiration timestamp is asserted.
   - `400 Bad Request`: Missing username or password fields.
   - `401 Unauthorized`: Invalid credentials supplied.
-  - `422 Unprocessable Entity`: Malformed JSON or invalid email structure.
+  - `422 Unprocessable Entity`: Mock long-email validation response. Malformed JSON handling is not exercised.
 
 ### Endpoint 2: Session Introspection & Profile
 
@@ -54,7 +54,7 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
 - **Response Contracts**:
   - `200 OK`: Returns user details and role permissions.
   - `401 Unauthorized`: Missing or invalid Bearer token.
-  - `403 Forbidden`: Insufficient privilege scope.
+  - `403 Forbidden`: Planning target only; insufficient privilege scope is not exercised by the current mock suite.
 
 ---
 
@@ -66,7 +66,7 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
 
 | Scenario ID    | Endpoint                   | Category              | Description                                                               | Persona   | Risk     | Priority |
 | :------------- | :------------------------- | :-------------------- | :------------------------------------------------------------------------ | :-------- | :------- | :------- |
-| **SCN-API-01** | `POST /api/v1/auth/login`  | Positive / Contract   | Valid admin credentials return 200 OK with valid JWT token                | Admin     | High     | P1       |
+| **SCN-API-01** | `POST /api/v1/auth/login`  | Positive / Contract   | Admin mock login returns 200 OK with a mock token, role, and expiresIn     | Admin     | High     | P1       |
 | **SCN-API-02** | `POST /api/v1/auth/login`  | Positive / Contract   | Valid standard user credentials return 200 OK with user role              | User      | High     | P1       |
 | **SCN-API-03** | `POST /api/v1/auth/login`  | Negative / Auth       | Invalid password returns 401 Unauthorized with error message              | Admin     | High     | P1       |
 | **SCN-API-04** | `POST /api/v1/auth/login`  | Negative / Validation | Empty payload or missing fields returns 400 Bad Request                   | Guest     | Medium   | P2       |
@@ -82,8 +82,8 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
 1. **Default Headers**: Injected automatically by `ApiClient`:
    - `Content-Type: application/json`
    - `Accept: application/json`
-   - `X-Request-ID`: Generated UUID for end-to-end request tracing.
-2. **Persona Token Matrix**:
+   - `X-Request-ID`: Generated `req-<timestamp>-<random suffix>` correlation identifier, not a UUID or proof of end-to-end tracing. Browser mock fetches do not use `ApiClient` header injection.
+2. **Planned Persona Token Matrix** (not verified authorization behavior):
    - `Admin`: Full read/write access token.
    - `User`: Standard user read/write access token.
    - `Guest`: Read-only public access token.
@@ -93,7 +93,7 @@ The `example.com` endpoints and sample credentials in this plan are placeholders
 
 ## 6. Traceability & Execution Governance
 
-API scenarios are defined in this plan and mapped to the tracker for current execution status. The present implementation in [tests/apiTests/api.spec.ts](tests/apiTests/api.spec.ts) uses browser-intercepted mock responses; it does not use Playwright's `APIRequestContext`.
+API scenarios are defined in this plan and mapped to the tracker for current execution status. The present mock implementation in [tests/apiTests/api.spec.ts](../tests/apiTests/api.spec.ts) uses browser-intercepted responses. Only the separate API-client safety assertion uses the request fixture; no service API contract is exercised through `APIRequestContext`.
 
 ## 7. Current Automation Evidence Boundary
 
