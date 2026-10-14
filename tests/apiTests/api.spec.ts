@@ -59,6 +59,48 @@ test.describe("Mocked API Flow Suite - Contract and Response Checks", () => {
     expect(result.data.expiresIn).toBe(3600);
   });
 
+  test("REQ-API-01 SCN-API-02: Mocked standard-user login returns the user role", async ({
+    page,
+  }) => {
+    await page.route("**/api/v1/auth/login", async (route) => {
+      const body = JSON.parse(route.request().postData() || "{}");
+      expect(body.username).toBe(personas.user.username);
+      expect(body.password).toBe(personas.user.password);
+
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          token: "mock-jwt-user-token-12345",
+          user: "User",
+          role: "user",
+          expiresIn: 3600,
+        }),
+      });
+    });
+
+    await page.goto("/login.html");
+    const result = await page.evaluate(
+      async (credentials) => {
+        const res = await fetch("/api/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(credentials),
+        });
+        return { status: res.status, data: await res.json() };
+      },
+      {
+        username: personas.user.username,
+        password: personas.user.password,
+      },
+    );
+
+    expect(result.status).toBe(200);
+    expect(result.data.token).toBeDefined();
+    expect(result.data.role).toBe("user");
+    expect(result.data.expiresIn).toBe(3600);
+  });
+
   test("REQ-API-01 SCN-API-03: Mocked invalid login returns 401 Unauthorized", async ({
     page,
   }) => {
@@ -118,6 +160,41 @@ test.describe("Mocked API Flow Suite - Contract and Response Checks", () => {
 
     expect(result.status).toBe(400);
     expect(result.data.error).toContain("required");
+  });
+
+  test("REQ-API-01 SCN-API-05: Mocked login returns a validation error for a 1024-character email", async ({
+    page,
+  }) => {
+    const longEmail = `${securityPayloads.boundaryStrings.longString.slice(0, 1012)}@example.com`;
+    expect(longEmail).toHaveLength(1024);
+
+    await page.route("**/api/v1/auth/login", async (route) => {
+      const body = JSON.parse(route.request().postData() || "{}");
+      expect(body.username).toBe(longEmail);
+
+      await route.fulfill({
+        status: 422,
+        contentType: "application/json",
+        body: JSON.stringify({ error: "Invalid email address." }),
+      });
+    });
+
+    await page.goto("/login.html");
+    const result = await page.evaluate(
+      async ({ email, password }) => {
+        const res = await fetch("/api/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: email, password }),
+        });
+        return { status: res.status, data: await res.json() };
+      },
+      { email: longEmail, password: personas.guest.password },
+    );
+
+    expect(result.status).toBe(422);
+    expect(result.data.error).toBe("Invalid email address.");
+    expect(result.data.error).not.toContain(longEmail);
   });
 
   test("REQ-API-01 SCN-API-06: Mocked login rejects SQL injection payloads", async ({

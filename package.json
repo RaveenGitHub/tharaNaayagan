@@ -22,6 +22,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --pretty false",
     "quality-gate": "npm run lint && npm run typecheck && npm run traceability:validate && npm audit --audit-level=high",
+    "impact:analyze": "node scripts/analyze-impact.mjs",
     "traceability:log": "node scripts/traceability.mjs",
     "traceability:validate": "node scripts/validate-traceability.mjs",
     "prepare": "node -e \"try { const { execSync } = require('child_process'); execSync('git rev-parse --git-dir', { stdio: 'ignore' }); if (require('fs').existsSync('.githooks')) { execSync('git config core.hooksPath .githooks', { stdio: 'inherit' }); } } catch {}\""

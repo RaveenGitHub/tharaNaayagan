@@ -36,7 +36,7 @@ Use this structure directly. Adhere to patterns in existing files.
 
 ## Required Workflow
 
-1. Identify the requested requirement/scenario IDs and summarize impacted tests, Page Objects, fixtures, utilities, configs, and plan/strategy sections before editing.
+1. Identify the requested requirement/scenario IDs, run `npm run impact:analyze -- <IDs>`, and summarize impacted tests, Page Objects, fixtures, utilities, configs, and plan/strategy sections before editing.
 2. If acceptance criteria, target environment, or scope expansion is unclear or materially changes behavior, ask the user before implementation. Do not add adjacent-scope tests without confirmation.
 3. Extend or create Page Objects in `pages/` following the `BasePage` contract.
 4. Update or centralize locators in `locators/common.locators.ts`.

@@ -25,6 +25,7 @@ Transform designed API scenarios marked "Ready for Automation" into executable P
 - Full test metadata annotations (`Requirement ID`, `Scenario ID`, `Severity S1–S5`, `Priority P1–P5`, `Traceability Score`)
 - Quality gate validation (`npm run quality-gate`) and test execution (`npm test` / `npm run test:api` / `npm run test:apiTests`)
 - Traceability validation (`npm run traceability:validate`) with every test mapped through the API plan to its strategy section
+- Focused impact analysis (`npm run impact:analyze -- <requirement-or-scenario-ID>`) before changing impacted API tests, clients, fixtures, or configuration
 
 ## Inputs to Analyze
 

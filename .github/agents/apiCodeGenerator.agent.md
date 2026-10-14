@@ -30,6 +30,7 @@ Generate complete API automation test scripts for all scenarios marked **“Read
 - **Endpoint Specifications**: Ingest endpoint details (paths, HTTP methods, parameters, request/response bodies).
 - **Scenario Metadata**: Review risk levels, business priorities, persona requirements, and environment compatibilities.
 - **Security & Mocks**: Extract mock schemas, error contracts, and OWASP API Top 10 security validation cases.
+- **Change Impact**: Before editing, run `npm run impact:analyze -- <requirement-or-scenario-ID>` and review matching tests, plans, fixtures, utilities, and configuration. Treat the report as a reference search, not as approval to widen scope.
 
 ### 2. Leverage Playwright
 

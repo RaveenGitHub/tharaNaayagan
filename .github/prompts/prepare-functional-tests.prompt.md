@@ -24,4 +24,4 @@ Generate clean, maintainable Playwright functional automation code following rep
 - Application structure in `public/` or live target URL
 - Existing POM classes in `pages/`
 
-Before editing, summarize the impacted requirement/scenario, tests, Page Objects, fixtures, utilities, configuration, test-plan section, and strategy section. Ask the user when acceptance criteria, target environment, or a material scope change is unclear. Keep additions risk-relevant and within the affected module; update linked documentation and run `npm run traceability:validate`.
+Before editing, run `npm run impact:analyze -- <requirement-or-scenario-ID>` and summarize the impacted requirement/scenario, tests, Page Objects, fixtures, utilities, configuration, test-plan section, and strategy section. Ask the user when acceptance criteria, target environment, or a material scope change is unclear. Keep additions risk-relevant and within the affected module; update linked documentation and run `npm run traceability:validate`.
