@@ -3,7 +3,7 @@ import { LoginPage } from "../../pages/login.page";
 import { securityPayloads } from "../../fixtures/test-data";
 
 test.describe("Boundary & Input Validation Suite", () => {
-  test("empty username and password submission triggers client validation error", async ({
+  test("REQ-06 SCN-06: Empty credentials trigger client validation", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -16,7 +16,7 @@ test.describe("Boundary & Input Validation Suite", () => {
     );
   });
 
-  test("whitespace-only input is trimmed and rejected gracefully", async ({
+  test("REQ-06 SCN-09: Whitespace-only credentials are rejected", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -29,7 +29,7 @@ test.describe("Boundary & Input Validation Suite", () => {
     );
   });
 
-  test("extremely long payload strings do not crash the login application", async ({
+  test("REQ-06 SCN-10: Long username input does not crash the application", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);

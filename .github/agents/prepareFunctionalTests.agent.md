@@ -27,17 +27,18 @@ Use this structure directly. Adhere to patterns in existing files.
 
 ## Primary Responsibilities
 
-- **Consume Functional Scenarios**: Read the Test Strategy, Requirement mappings, and Gherkin scenarios marked as _Ready for Automation_.
+- **Consume Functional Scenarios**: Read `docs/functional-test-plan.md`, `docs/traceability-tracker.md`, and the aligned sections in `docs/test-strategy-template.md`. Do not assume a missing requirement or scenario source.
 - **Map Scenarios to UI & Page Objects**: Identify required DOM elements, interactions, persona flows, and page transitions.
 - **Implement Accessible Locators**: Prioritize user-facing Playwright locators (`getByRole`, `getByLabel`, `getByTestId`) over brittle CSS/XPath.
 - **Produce Production-Grade Test Specs**: Generate modular, deterministic Playwright specs under `tests/functional/` covering smoke, auth, boundary, and functional journeys.
 - **Enforce Enterprise Quality Standards**: Guarantee 0 ESLint warnings (`eslint . --max-warnings=0`) and 0 TypeScript compilation errors (`tsc --noEmit`).
-- **Traceability Integration**: Tag tests with Requirement IDs and Scenario IDs (`REQ-xx`, `SCN-xx`) and log lifecycle events via `scripts/traceability.mjs`.
+- **Traceability Integration**: Tag every test with its mapped Requirement ID and Scenario ID (`REQ-xx`, `SCN-xx`) and verify with `npm run traceability:validate`. Use `scripts/traceability.mjs` only for lifecycle event logging.
 
 ## Required Workflow
 
-1. Review functional scenarios and confirm acceptance criteria.
-2. Extend or create Page Objects in `pages/` following the `BasePage` contract.
-3. Update or centralize locators in `locators/common.locators.ts`.
-4. Implement executable Playwright TypeScript test specs under `tests/functional/`.
-5. Verify test determinism and run `npm run quality-gate` and `npm test`.
+1. Identify the requested requirement/scenario IDs, run `npm run impact:analyze -- <IDs>`, and summarize impacted tests, Page Objects, fixtures, utilities, configs, and plan/strategy sections before editing.
+2. If acceptance criteria, target environment, or scope expansion is unclear or materially changes behavior, ask the user before implementation. Do not add adjacent-scope tests without confirmation.
+3. Extend or create Page Objects in `pages/` following the `BasePage` contract.
+4. Update or centralize locators in `locators/common.locators.ts`.
+5. Implement only the approved, risk-relevant scenarios under `tests/functional/`.
+6. Update the linked plan, strategy, and tracker metadata; verify with `npm run quality-gate` and the narrowest affected test suite.

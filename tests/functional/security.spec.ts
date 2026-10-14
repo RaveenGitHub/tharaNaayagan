@@ -3,8 +3,8 @@ import { LoginPage } from "../../pages/login.page";
 import { DashboardPage } from "../../pages/dashboard.page";
 import { securityPayloads } from "../../fixtures/test-data";
 
-test.describe("Security & Misuse Prevention Suite", () => {
-  test("SQL injection payloads in login fields are rejected safely", async ({
+test.describe("Input Handling & Guest Context Suite", () => {
+  test("REQ-07 SCN-07: SQL injection payloads in login fields are rejected", async ({
     page,
   }) => {
     const loginPage = new LoginPage(page);
@@ -17,7 +17,7 @@ test.describe("Security & Misuse Prevention Suite", () => {
     }
   });
 
-  test("XSS script injection in user query parameters is sanitized without execution", async ({
+  test("REQ-07 SCN-11: XSS query input is displayed as inert text", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page);
@@ -39,7 +39,7 @@ test.describe("Security & Misuse Prevention Suite", () => {
     }
   });
 
-  test("direct dashboard access without authentication defaults safely to Guest context", async ({
+  test("REQ-05 SCN-12: Direct dashboard access defaults to Guest context", async ({
     page,
   }) => {
     const dashboardPage = new DashboardPage(page);

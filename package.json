@@ -4,7 +4,11 @@
   "description": "Enterprise-grade Playwright test automation framework with Page Object Model, Allure reporting, and traceability governance",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
+    "serve:demo": "http-server -a 127.0.0.1 -p 4173 ./public",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
@@ -17,13 +21,16 @@
     "test:boundary": "playwright test tests/functional/boundary.spec.ts",
     "test:api": "playwright test tests/apiTests/api.spec.ts",
     "test:parallel": "playwright test --workers=4",
-    "report": "allure generate allure-results --clean -o allure-report && allure open allure-report",
+    "report": "npm run report:generate && allure open allure-report",
+    "report:generate": "allure generate allure-results --clean -o allure-report",
+    "test:framework": "node --test scripts/validate-traceability.test.mjs",
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit --pretty false",
-    "quality-gate": "npm run lint && npm run typecheck",
+    "quality-gate": "npm run lint && npm run typecheck && npm run test:framework && npm run traceability:validate && npm audit --audit-level=high",
+    "impact:analyze": "node scripts/analyze-impact.mjs",
     "traceability:log": "node scripts/traceability.mjs",
-    "traceability:sync": "node scripts/traceability.mjs \"Test Plan\" \"Update\" \"TP-SYNC\" \"Traceability Sync\" \"Draft\" \"Active\" \"QA Lead\" \"manual-sync\"",
+    "traceability:validate": "node scripts/validate-traceability.mjs",
     "prepare": "node -e \"try { const { execSync } = require('child_process'); execSync('git rev-parse --git-dir', { stdio: 'ignore' }); if (require('fs').existsSync('.githooks')) { execSync('git config core.hooksPath .githooks', { stdio: 'inherit' }); } } catch {}\""
   },
   "devDependencies": {
@@ -31,6 +38,8 @@
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.10.2",
     "allure-playwright": "^3.12.1",
+    "allure-commandline": "2.46.1",
+    "http-server": "14.1.1",
     "dotenv": "^16.6.1",
     "eslint": "^9.39.5",
     "eslint-plugin-playwright": "^2.2.0",

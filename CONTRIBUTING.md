@@ -17,8 +17,10 @@ Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) in all pro
 
 2. **Install Dependencies**:
 
+   Use Node.js 22.x, matching `.nvmrc` and CI. Restore the committed lockfile:
+
    ```bash
-   npm install
+   npm ci
    npx playwright install --with-deps
    ```
 
@@ -26,7 +28,7 @@ Please review and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md) in all pro
    - Create feature/bugfix branches off `main` (e.g., `feat/login-fixtures`, `fix/session-storage`).
 
 4. **Quality Gates**:
-   Before submitting any pull request, verify that linting and type checking succeed:
+   Before submitting any pull request, verify lint, type checking, framework regression tests, traceability integrity, and the high-severity dependency audit:
 
    ```bash
    npm run quality-gate

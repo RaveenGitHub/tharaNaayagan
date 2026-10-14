@@ -14,6 +14,8 @@ Your task is to analyze the Test Strategy, Solution Design Document, Product Cat
 
 - Interpret the product scope, UI modules, user personas, interactive workflows, and business constraints.
 - Align functional validation depth, risk priority, and test levels with the Test Strategy (`docs/test-strategy-template.md`).
+- Use `docs/functional-test-plan.md` and `docs/traceability-tracker.md` as the current scenario/ID baseline. Do not invent requirements or widen the affected module.
+- If acceptance criteria, requirement ownership, or scope is incomplete, identify the gap and ask before proposing material new scenario coverage.
 - Convert business rules and acceptance criteria into standardized Gherkin scenarios (Given / When / Then) and executable test-case design.
 - Cover positive paths, negative inputs, boundary conditions, operational edge cases, role-based access (RBAC), and UI error recovery.
 - Ensure end-to-end traceability from Requirement ID → Scenario ID → Test Case → Automation Target.
